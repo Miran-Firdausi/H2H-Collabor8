@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Pencil, Trash2, ArrowUpDown, Star, Calendar, Eye } from "lucide-react";
-import { format } from "date-fns";
+import {
+  Pencil,
+  Trash2,
+  ArrowUpDown,
+  Star,
+  Calendar,
+  Eye,
+  Wand2,
+} from "lucide-react";
+import { format, addDays } from "date-fns";
+import axios from "axios";
 import "./ToDo.css";
 
 const ToDo = () => {
   const [tasks, setTasks] = useState([]);
+  const [projectName, setProjectName] = useState("To-Do");
   const [newTask, setNewTask] = useState({
     id: "",
     name: "",
@@ -16,8 +26,13 @@ const ToDo = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isAutomateModalOpen, setIsAutomateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [viewingTask, setViewingTask] = useState(null);
+  const [automateForm, setAutomateForm] = useState({
+    projectName: "",
+    projectDescription: "",
+  });
 
   const addTask = () => {
     if (newTask.name && newTask.dueDate) {
@@ -60,6 +75,57 @@ const ToDo = () => {
       return 0;
     });
     setTasks(sortedTasks);
+  };
+
+  const handleAutomate = async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/generate-tasks/",
+        {
+          project_desc: automateForm.projectDescription,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      // Update project name and clear existing tasks
+      setProjectName(automateForm.projectName);
+      setTasks([]);
+
+      // Process the generated tasks
+      const generatedTasks = response.data.tasks.map((task) => {
+        const currentDate = new Date();
+        const dueDate = addDays(currentDate, task.daysToFinish);
+
+        return {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          name: task.task,
+          description: task.description,
+          dueDate: format(dueDate, "yyyy-MM-dd"),
+          priority: 1, // Default priority
+          status: "todo",
+        };
+      });
+
+      // Set the new tasks
+      setTasks(generatedTasks);
+
+      // Close the modal
+      setIsAutomateModalOpen(false);
+
+      // Reset the form
+      setAutomateForm({
+        projectName: "",
+        projectDescription: "",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to generate tasks. Please try again.");
+    }
   };
 
   const onDragEnd = (result) => {
@@ -173,7 +239,7 @@ const ToDo = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="todo-container">
-        <h1>To-Do</h1>
+        <h1>{projectName}</h1>
 
         <div className="controls">
           <button
@@ -184,6 +250,12 @@ const ToDo = () => {
           </button>
           <button onClick={() => handleSort("dueDate")} className="sort-button">
             <ArrowUpDown size={16} /> Sort by Due Date
+          </button>
+          <button
+            onClick={() => setIsAutomateModalOpen(true)}
+            className="automate-button"
+          >
+            <Wand2 size={16} /> Automate
           </button>
         </div>
 
@@ -246,6 +318,7 @@ const ToDo = () => {
           />
         </div>
 
+        {/* Edit Task Modal */}
         {isModalOpen && editingTask && (
           <div className="modal-overlay">
             <div className="modal">
@@ -310,6 +383,7 @@ const ToDo = () => {
           </div>
         )}
 
+        {/* View Task Modal */}
         {isViewModalOpen && viewingTask && (
           <div className="modal-overlay">
             <div className="modal view-modal">
@@ -336,6 +410,49 @@ const ToDo = () => {
                   className="cancel-button"
                 >
                   Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Automate Modal */}
+        {isAutomateModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Automate Project Tasks</h2>
+              <input
+                type="text"
+                placeholder="Project Name"
+                value={automateForm.projectName}
+                onChange={(e) =>
+                  setAutomateForm({
+                    ...automateForm,
+                    projectName: e.target.value,
+                  })
+                }
+                className="text-input"
+              />
+              <textarea
+                placeholder="Project Description"
+                value={automateForm.projectDescription}
+                onChange={(e) =>
+                  setAutomateForm({
+                    ...automateForm,
+                    projectDescription: e.target.value,
+                  })
+                }
+                className="text-input description-input"
+              />
+              <div className="modal-buttons">
+                <button onClick={handleAutomate} className="save-button">
+                  Generate Tasks
+                </button>
+                <button
+                  onClick={() => setIsAutomateModalOpen(false)}
+                  className="cancel-button"
+                >
+                  Cancel
                 </button>
               </div>
             </div>
