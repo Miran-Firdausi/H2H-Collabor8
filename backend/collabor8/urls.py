@@ -20,5 +20,9 @@ from django.urls import path,include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+<<<<<<< HEAD
     path("", include('taskautomation.urls')),
+=======
+    path('', include('taskautomation.urls')),
+>>>>>>> bccca94 (add automatic task generation feature)
 ]
