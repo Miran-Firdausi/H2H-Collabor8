@@ -1,0 +1,50 @@
+.sticky-note {
+    width: 200px;
+    height: 250px;
+    padding: 15px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #333;
+  }
+  
+  .task-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .task-desc {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  .days-to-finish {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 10px;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: #ffeb3b;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  
