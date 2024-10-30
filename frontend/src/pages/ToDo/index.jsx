@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useRef, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   Pencil,
@@ -8,14 +9,19 @@ import {
   Calendar,
   Eye,
   Wand2,
+  ArrowRight,
 } from "lucide-react";
 import { format, addDays } from "date-fns";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ToDo.css";
 
 const ToDo = () => {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [projectName, setProjectName] = useState("To-Do");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const [newTask, setNewTask] = useState({
     id: "",
     name: "",
@@ -33,6 +39,36 @@ const ToDo = () => {
     projectName: "",
     projectDescription: "",
   });
+
+  const handleGoToBoard = () => {
+    // Convert todo tasks to sticky notes format
+    const stickyNotes = tasks
+      .filter((task) => task.status === "todo")
+      .map((task) => ({
+        id: task.id,
+        content: `${task.name}\n${task.description || ""}`,
+        position: { x: 50, y: 50 },
+      }));
+
+    // Store the sticky notes in localStorage for the Board component to access
+    localStorage.setItem("stickyNotes", JSON.stringify(stickyNotes));
+
+    // Navigate to the board page
+    navigate("/board");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const addTask = () => {
     if (newTask.name && newTask.dueDate) {
@@ -75,6 +111,7 @@ const ToDo = () => {
       return 0;
     });
     setTasks(sortedTasks);
+    setIsDropdownOpen(false);
   };
 
   const handleAutomate = async () => {
@@ -92,11 +129,9 @@ const ToDo = () => {
         }
       );
 
-      // Update project name and clear existing tasks
       setProjectName(automateForm.projectName);
       setTasks([]);
 
-      // Process the generated tasks
       const generatedTasks = response.data.tasks.map((task) => {
         const currentDate = new Date();
         const dueDate = addDays(currentDate, task.daysToFinish);
@@ -106,18 +141,13 @@ const ToDo = () => {
           name: task.task,
           description: task.description,
           dueDate: format(dueDate, "yyyy-MM-dd"),
-          priority: 1, // Default priority
+          priority: 1,
           status: "todo",
         };
       });
 
-      // Set the new tasks
       setTasks(generatedTasks);
-
-      // Close the modal
       setIsAutomateModalOpen(false);
-
-      // Reset the form
       setAutomateForm({
         projectName: "",
         projectDescription: "",
@@ -226,9 +256,11 @@ const ToDo = () => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks.map((task, index) => (
-              <TaskCard key={task.id} task={task} index={index} />
-            ))}
+            {tasks
+              .filter((task) => task.status === status)
+              .map((task, index) => (
+                <TaskCard key={task.id} task={task} index={index} />
+              ))}
             {provided.placeholder}
           </div>
         )}
@@ -240,22 +272,16 @@ const ToDo = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="todo-container">
         <h1>{projectName}</h1>
-
-        <div className="controls">
-          <button
-            onClick={() => handleSort("priority")}
-            className="sort-button"
-          >
-            <ArrowUpDown size={16} /> Sort by Priority
-          </button>
-          <button onClick={() => handleSort("dueDate")} className="sort-button">
-            <ArrowUpDown size={16} /> Sort by Due Date
-          </button>
+        <div style={{display:"flex", gap:"10px"}}>
           <button
             onClick={() => setIsAutomateModalOpen(true)}
             className="automate-button"
           >
             <Wand2 size={16} /> Automate
+          </button>
+
+          <button onClick={handleGoToBoard} className="board-button">
+            <ArrowRight size={16} /> Taskboard
           </button>
         </div>
 
@@ -299,23 +325,40 @@ const ToDo = () => {
             Add Task
           </button>
         </div>
+        <div className="sort-controls">
+          <div className="custom-dropdown" ref={dropdownRef}>
+            <button
+              className="sort-dropdown-button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <ArrowUpDown className="mr-2 h-4 w-4" />
+              Sort Tasks
+            </button>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                <button
+                  className="dropdown-item"
+                  onClick={() => handleSort("priority")}
+                >
+                  <Star className="mr-2 h-4 w-4" />
+                  Sort by Priority
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => handleSort("dueDate")}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Sort by Due Date
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="sections-container">
-          <TaskSection
-            title="To Do"
-            status="todo"
-            tasks={tasks.filter((task) => task.status === "todo")}
-          />
-          <TaskSection
-            title="In Progress"
-            status="in-progress"
-            tasks={tasks.filter((task) => task.status === "in-progress")}
-          />
-          <TaskSection
-            title="Completed"
-            status="completed"
-            tasks={tasks.filter((task) => task.status === "completed")}
-          />
+          <TaskSection title="To Do" status="todo" tasks={tasks} />
+          <TaskSection title="In Progress" status="in-progress" tasks={tasks} />
+          <TaskSection title="Completed" status="completed" tasks={tasks} />
         </div>
 
         {/* Edit Task Modal */}
