@@ -10,6 +10,8 @@ import {
   Eye,
   Wand2,
   ArrowRight,
+  Link,
+  AlertCircle,
 } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +31,7 @@ const ToDo = () => {
     dueDate: "",
     priority: 1,
     status: "todo",
+    dependencies: [], // Array of task IDs this task depends on
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -40,8 +43,52 @@ const ToDo = () => {
     projectDescription: "",
   });
 
+  // Function to check if a task can be moved to a new status
+  const canChangeStatus = (taskId, newStatus) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return false;
+
+    // If task has dependencies, check if they're all completed
+    if (task.dependencies.length > 0) {
+      if (newStatus === "completed") {
+        // All dependencies must be completed
+        return task.dependencies.every(
+          (depId) => tasks.find((t) => t.id === depId)?.status === "completed"
+        );
+      } else if (newStatus === "in-progress") {
+        // All dependencies must be at least in progress
+        return task.dependencies.every((depId) => {
+          const depTask = tasks.find((t) => t.id === depId);
+          return (
+            depTask?.status === "completed" || depTask?.status === "in-progress"
+          );
+        });
+      }
+    }
+    return true;
+  };
+
+  // Function to get available tasks for dependencies
+  const getAvailableTasksForDependency = (taskId) => {
+    // Cannot depend on itself or create circular dependencies
+    return tasks.filter((task) => {
+      if (task.id === taskId) return false;
+      // Check for circular dependencies
+      const wouldCreateCircular = (dependencyId, checkedIds = new Set()) => {
+        if (checkedIds.has(dependencyId)) return true;
+        checkedIds.add(dependencyId);
+        const task = tasks.find((t) => t.id === dependencyId);
+        return task?.dependencies.some(
+          (depId) =>
+            depId === taskId || wouldCreateCircular(depId, new Set(checkedIds))
+        );
+      };
+      return !wouldCreateCircular(task.id);
+    });
+  };
+
+  // Original functions with modifications...
   const handleGoToBoard = () => {
-    // Convert todo tasks to sticky notes format
     const stickyNotes = tasks
       .filter((task) => task.status === "todo")
       .map((task) => ({
@@ -49,11 +96,7 @@ const ToDo = () => {
         content: `${task.name}\n${task.description || ""}`,
         position: { x: 50, y: 50 },
       }));
-
-    // Store the sticky notes in localStorage for the Board component to access
     localStorage.setItem("stickyNotes", JSON.stringify(stickyNotes));
-
-    // Navigate to the board page
     navigate("/board");
   };
 
@@ -63,7 +106,6 @@ const ToDo = () => {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -83,12 +125,21 @@ const ToDo = () => {
         dueDate: "",
         priority: 1,
         status: "todo",
+        dependencies: [],
       });
     }
   };
 
   const deleteTask = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    // Remove the task and update dependencies
+    setTasks(
+      tasks
+        .map((task) => ({
+          ...task,
+          dependencies: task.dependencies.filter((depId) => depId !== taskId),
+        }))
+        .filter((task) => task.id !== taskId)
+    );
   };
 
   const updateTask = (taskId, updatedTask) => {
@@ -130,8 +181,6 @@ const ToDo = () => {
       );
 
       setProjectName(automateForm.projectName);
-      setTasks([]);
-
       const generatedTasks = response.data.tasks.map((task) => {
         const currentDate = new Date();
         const dueDate = addDays(currentDate, task.daysToFinish);
@@ -143,6 +192,7 @@ const ToDo = () => {
           dueDate: format(dueDate, "yyyy-MM-dd"),
           priority: 1,
           status: "todo",
+          dependencies: [],
         };
       });
 
@@ -169,6 +219,14 @@ const ToDo = () => {
     const sourceItems = allTasks.filter((task) => task.status === sourceStatus);
     const taskToMove = sourceItems[source.index];
 
+    // Check if the status change is allowed
+    if (!canChangeStatus(taskToMove.id, destStatus)) {
+      alert(
+        "Cannot change task status: dependent tasks must be completed first"
+      );
+      return;
+    }
+
     const newTasks = allTasks.filter((task) => task.id !== taskToMove.id);
     taskToMove.status = destStatus;
 
@@ -184,65 +242,77 @@ const ToDo = () => {
     setTasks(finalTasks);
   };
 
-  const TaskCard = ({ task, index }) => (
-    <Draggable key={task.id} draggableId={task.id} index={index}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`task-card ${task.status}`}
-        >
-          <div className="task-content">
-            <div className="task-row">
-              <h3 className="task-name">{task.name}</h3>
-              <button
-                onClick={() => {
-                  setEditingTask({ ...task });
-                  setIsModalOpen(true);
-                }}
-                className="icon-button"
-                aria-label="Edit task"
-              >
-                <Pencil size={14} />
-              </button>
-            </div>
-            <div className="task-row">
-              <div className="task-metadata">
-                <span className="metadata-item">
-                  <Calendar size={14} />
-                  {format(new Date(task.dueDate), "MMM dd")}
-                </span>
-                <span className="metadata-item">
-                  <Star size={14} />
-                  {task.priority}
-                </span>
-              </div>
-              <div className="task-controls">
+  const TaskCard = ({ task, index }) => {
+    const dependencyNames = task.dependencies
+      .map((depId) => tasks.find((t) => t.id === depId)?.name)
+      .filter(Boolean);
+
+    return (
+      <Draggable key={task.id} draggableId={task.id} index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            className={`task-card ${task.status}`}
+          >
+            <div className="task-content">
+              <div className="task-row">
+                <h3 className="task-name">{task.name}</h3>
                 <button
                   onClick={() => {
-                    setViewingTask(task);
-                    setIsViewModalOpen(true);
+                    setEditingTask({ ...task });
+                    setIsModalOpen(true);
                   }}
-                  className="icon-button view"
-                  aria-label="View task details"
+                  className="icon-button"
+                  aria-label="Edit task"
                 >
-                  <Eye size={14} />
+                  <Pencil size={14} />
                 </button>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="icon-button delete"
-                  aria-label="Delete task"
-                >
-                  <Trash2 size={14} />
-                </button>
+              </div>
+              {dependencyNames.length > 0 && (
+                <div className="dependencies-list">
+                  <Link size={12} />
+                  <span>Depends on: {dependencyNames.join(", ")}</span>
+                </div>
+              )}
+              <div className="task-row">
+                <div className="task-metadata">
+                  <span className="metadata-item">
+                    <Calendar size={14} />
+                    {format(new Date(task.dueDate), "MMM dd")}
+                  </span>
+                  <span className="metadata-item">
+                    <Star size={14} />
+                    {task.priority}
+                  </span>
+                </div>
+                <div className="task-controls">
+                  <button
+                    onClick={() => {
+                      setViewingTask(task);
+                      setIsViewModalOpen(true);
+                    }}
+                    className="icon-button view"
+                    aria-label="View task details"
+                  >
+                    <Eye size={14} />
+                  </button>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="icon-button delete"
+                    aria-label="Delete task"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </Draggable>
-  );
+        )}
+      </Draggable>
+    );
+  };
 
   const TaskSection = ({ title, status, tasks }) => (
     <div className={`task-section ${status}`}>
@@ -272,7 +342,7 @@ const ToDo = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="todo-container">
         <h1>{projectName}</h1>
-        <div style={{display:"flex", gap:"10px"}}>
+        <div style={{ display: "flex", gap: "10px" }}>
           <button
             onClick={() => setIsAutomateModalOpen(true)}
             className="automate-button"
@@ -325,6 +395,7 @@ const ToDo = () => {
             Add Task
           </button>
         </div>
+
         <div className="sort-controls">
           <div className="custom-dropdown" ref={dropdownRef}>
             <button
@@ -408,6 +479,46 @@ const ToDo = () => {
                 }
                 className="number-input"
               />
+
+              {/* Dependency Selection */}
+              <div className="dependency-section">
+                <h3>Task Dependencies</h3>
+                <div className="dependency-list">
+                  {getAvailableTasksForDependency(editingTask.id).map(
+                    (task) => (
+                      <div key={task.id} className="dependency-item">
+                        <input
+                          type="checkbox"
+                          id={`dep-${task.id}`}
+                          checked={editingTask.dependencies.includes(task.id)}
+                          onChange={(e) => {
+                            const newDependencies = e.target.checked
+                              ? [...editingTask.dependencies, task.id]
+                              : editingTask.dependencies.filter(
+                                  (id) => id !== task.id
+                                );
+                            setEditingTask({
+                              ...editingTask,
+                              dependencies: newDependencies,
+                            });
+                          }}
+                        />
+                        <label htmlFor={`dep-${task.id}`}>{task.name}</label>
+                      </div>
+                    )
+                  )}
+                </div>
+                {editingTask.dependencies.length > 0 && (
+                  <div className="dependency-warning">
+                    <AlertCircle size={14} />
+                    <span>
+                      This task cannot be started until its dependencies are in
+                      progress or completed.
+                    </span>
+                  </div>
+                )}
+              </div>
+
               <div className="modal-buttons">
                 <button
                   onClick={() => updateTask(editingTask.id, editingTask)}
@@ -446,6 +557,26 @@ const ToDo = () => {
 
                 <h3>Status</h3>
                 <p className="status-text">{viewingTask.status}</p>
+
+                <h3>Dependencies</h3>
+                {viewingTask.dependencies.length > 0 ? (
+                  <div className="dependency-view-list">
+                    {viewingTask.dependencies.map((depId) => {
+                      const depTask = tasks.find((t) => t.id === depId);
+                      return depTask ? (
+                        <div key={depId} className="dependency-view-item">
+                          <Link size={14} />
+                          <span>{depTask.name}</span>
+                          <span className={`status-badge ${depTask.status}`}>
+                            {depTask.status}
+                          </span>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                ) : (
+                  <p>No dependencies</p>
+                )}
               </div>
               <div className="modal-buttons">
                 <button
