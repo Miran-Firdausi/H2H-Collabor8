@@ -1,68 +1,49 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Home, CheckSquare, Layout, Github, Users, Zap, Shield, Clock } from 'lucide-react';
-import './LandingPage.css';
+import React, { useState } from "react";
+import { Menu, Home, Users, Zap, Shield, Clock } from "lucide-react";
+import Footer from "../../components/Footer";
+import "./LandingPage.css";
 
 const LandingPage = () => {
-  const [isSignedIn] = useState(true);
+  const [isSignedIn] = useState(false);
 
   const stats = [
-    { number: '10K+', label: 'Active Users' },
-    { number: '50M+', label: 'Tasks Completed' },
-    { number: '99.9%', label: 'Uptime' },
-    { number: '24/7', label: 'Support' },
+    { number: "10K+", label: "Active Users" },
+    { number: "50M+", label: "Tasks Completed" },
+    { number: "99.9%", label: "Uptime" },
+    { number: "24/7", label: "Support" },
   ];
 
   const testimonials = [
     {
       text: "Colabor8 has transformed how our team works together. The AI integration is a game-changer.",
       author: "Sarah Johnson",
-      role: "Product Manager at TechCorp"
+      role: "Product Manager at TechCorp",
     },
     {
       text: "The most intuitive project management tool we've ever used. It's like it reads our minds!",
       author: "Mike Chen",
-      role: "CTO at StartupX"
+      role: "CTO at StartupX",
     },
     {
       text: "Finally, a collaboration tool that actually makes our work easier instead of adding complexity.",
       author: "Emily Rodriguez",
-      role: "Team Lead at InnovateCo"
-    }
+      role: "Team Lead at InnovateCo",
+    },
   ];
 
   return (
     <div className="app-container">
-      <nav className="nav-bar">
-        <div className="nav-content">
-          <span className="logo">Colabor8</span>
-          
-          {isSignedIn && (
-            <div className="nav-links">
-              <Link to="/todo" className="nav-link">
-                <CheckSquare size={20} />
-                <span>Todo</span>
-              </Link>
-              <Link to="/board" className="nav-link">
-                <Layout size={20} />
-                <span>Board</span>
-              </Link>
-              <Link to="/gitboard" className="nav-link">
-                <Github size={20} />
-                <span>GitHub</span>
-              </Link>
-            </div>
-          )}
-        </div>
-      </nav>
-
       <div className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">All great projects start with Colabor8</h1>
+          <h1 className="hero-title">
+            All great projects start with
+            <span className="hero-title--gradient"> Colabor8</span>
+          </h1>
           <p className="hero-subtitle">
-            Empower your team with AI-driven collaboration tools that make project management effortless.
+            Empower your team with AI-driven collaboration tools that make
+            project management effortless.
           </p>
-          
+
           {!isSignedIn && (
             <div className="signup-container">
               <input
@@ -71,16 +52,18 @@ const LandingPage = () => {
                 className="email-input"
               />
               <p className="terms-text">
-                By clicking 'sign up' you agree to the Colabor8 Customer Agreement, which incorporates by reference the AI Product-Specific Terms, and acknowledge the Privacy Policy.
+                By clicking 'sign up' you agree to the Colabor8 Customer
+                Agreement, which incorporates by reference the AI
+                Product-Specific Terms, and acknowledge the Privacy Policy.
               </p>
               <button className="signup-button">Get Started Free</button>
-              
+
               <div className="divider">
                 <span>Or continue with</span>
               </div>
-              
+
               <div className="social-buttons">
-                {['Google', 'Microsoft', 'Apple', 'Slack'].map((provider) => (
+                {["Google", "Microsoft", "Apple", "Slack"].map((provider) => (
                   <button key={provider} className="social-button">
                     {provider}
                   </button>
@@ -155,51 +138,14 @@ const LandingPage = () => {
 
       <div className="cta-section">
         <div className="cta-content">
-          <h2 className="section-title">Ready to transform your workflow?</h2>
+          <h2 className="cta-section-title">
+            Ready to transform your workflow?
+          </h2>
           <button className="signup-button">Start Free Trial</button>
         </div>
       </div>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-column">
-            <h3>Product</h3>
-            <ul className="footer-links">
-              <li><a href="#">Features</a></li>
-              <li><a href="#">Pricing</a></li>
-              <li><a href="#">Security</a></li>
-              <li><a href="#">Enterprise</a></li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h3>Company</h3>
-            <ul className="footer-links">
-              <li><a href="#">About</a></li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Press</a></li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h3>Resources</h3>
-            <ul className="footer-links">
-              <li><a href="#">Documentation</a></li>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">API</a></li>
-              <li><a href="#">Status</a></li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h3>Legal</h3>
-            <ul className="footer-links">
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Security</a></li>
-              <li><a href="#">Cookies</a></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
