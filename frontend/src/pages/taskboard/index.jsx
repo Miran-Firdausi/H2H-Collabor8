@@ -91,9 +91,6 @@ const Board = () => {
   return (
     <div>
       <div className="board-header">
-        <button onClick={() => navigate("/")} className="back-button">
-          <ArrowLeft size={16} /> Back to ToDo
-        </button>
         <h2 className="title">Sticky Board</h2>
       </div>
       <div className="miro-board">
