@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "date-fns": "^4.1.0",
-    "lucide-react": "^0.453.0",
-    "react-beautiful-dnd": "^13.1.1"
-  }
-}

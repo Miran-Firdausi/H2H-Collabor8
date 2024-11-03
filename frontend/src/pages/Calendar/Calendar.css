@@ -1,145 +1,153 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
 .container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
 }
 
 .small-calendar {
-    width: 300px; 
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .big-calendar {
-    flex: 3; 
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  flex: 3;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-summary {
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-summary h3 {
-    font-size: 16px;
-    font-weight: bold;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .event-summary ul {
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
 .event-summary ul li {
-    list-style: none;
-    margin: 5px 0;
+  list-style: none;
+  margin: 5px 0;
 }
 
 .delete-button {
-    margin-left: 10px;
-    padding: 3px 5px;
-    background-color: #e63946;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
+  margin-left: 10px;
+  padding: 3px 5px;
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
 }
 
 .delete-button:hover {
-    background-color: #d62828;
+  background-color: #d62828;
 }
 
 .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 9999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
 }
 
-/* Calendar Styles */ 
+/* Calendar Styles */
 .react-calendar {
-    border: none;
-    font-size: 14px;
+  border: none;
+  font-size: 14px;
 }
 
 .react-calendar__navigation {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .react-calendar__navigation button {
-    background: none;
-    border: none;
-    color: #333;
-    padding: 5px 10px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  background: none;
+  border: none;
+  color: #333;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .react-calendar__navigation button:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .react-calendar__month-view__days__day--weekend {
-    color: #e63946;
+  color: #e63946;
 }
 
 .react-calendar__tile--now {
-    background: #90e0ef;
+  background: #90e0ef;
 }
 
 .react-calendar__tile--active {
-    background: #0077b6;
-    color: white;
+  background: #0077b6;
+  color: white;
 }
 
 .react-calendar__tile--active:hover {
-    background: #023e8a;
+  background: #023e8a;
 }
 
 .react-calendar__tile {
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
 }
 
 .react-calendar__tile:enabled:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
+}
+
+.auth-button {
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  border: 1px solid #333;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #0077b6;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background: #e0e0e0;
 }

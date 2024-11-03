@@ -1,206 +1,226 @@
-//npm install react-calendar react-big-calendar moment react-moment 
-//npm install react-modal emoji-picker-react react-color
-//npm install gapi-script
-
-import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import moment from 'moment';
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Modal from 'react-modal';
-import { TwitterPicker } from 'react-color';
-import { gapi } from 'gapi-script';
-import './Calendar.css';
+import React, { useState, useEffect } from "react";
+import CalendarView from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import moment from "moment";
+import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import Modal from "react-modal";
+import { TwitterPicker } from "react-color";
+import { gapi } from "gapi-script";
+import "./Calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-const clientId = '';
-const apiKey = '';
+const CLIENT_ID =
+  "773388467828-ppo5villgpsgakbktcoaucudp7b68shb.apps.googleusercontent.com";
+const API_KEY = "AIzaSyDVFHdvhVQQCjI99gHM3VSXNJuB62boVEw";
+const DISCOVERY_DOCS = [
+  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+];
+const SCOPES =
+  "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
-const App = () => {
+const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [viewDate, setViewDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
-    title: '',
-    startTime: '',
-    endTime: '',
-    color: '#61dafb'
+    title: "",
+    startTime: "",
+    endTime: "",
+    color: "#61dafb",
   });
   const [monthlyEvents, setMonthlyEvents] = useState([]);
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   // Initialize client id
   useEffect(() => {
-    const initClient = () => {
-      gapi.load('client:auth2', async () => {
-        try {
-          await gapi.client.init({
-            apiKey: apiKey,
-            clientId: clientId,
-            scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events',
-          });
-          const authInstance = gapi.auth2.getAuthInstance();
-          if (authInstance.isSignedIn.get()) {
-            const currentUser = authInstance.currentUser.get().getBasicProfile();
-            setUser({
-              name: currentUser.getName(),
-              email: currentUser.getEmail(),
-            });
-            loadCalendarEvents();
-          }
-        } catch (error) {
-          console.error('Error initializing Google API client:', error);
+    // Load Google Identity Services
+    const initializeGapiClient = async () => {
+      await gapi.load("client:auth2", async () => {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES,
+        });
+
+        // Check if user is already logged in
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+          setToken(accessToken);
+          loadUserProfile(accessToken);
+          loadCalendarEvents(accessToken);
         }
       });
     };
-    initClient();
+
+    initializeGapiClient();
   }, []);
 
-  //google sigin
-  const handleAuthClick = () => {
-    gapi.auth2.getAuthInstance().signIn().then(() => {
-      const currentUser = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+  const loadUserProfile = (accessToken) => {
+    const GoogleAuth = gapi.auth2.getAuthInstance();
+    const user = GoogleAuth.currentUser.get();
+    if (user.isSignedIn()) {
       setUser({
-        name: currentUser.getName(),
-        email: currentUser.getEmail(),
+        name: user.getBasicProfile().getName(),
+        email: user.getBasicProfile().getEmail(),
       });
-      loadCalendarEvents();
-    });
+    }
   };
 
-  //to load events from g calendar
-  const loadCalendarEvents = () => {
-    gapi.client.calendar.events.list({
-      calendarId: 'primary',
-      timeMin: new Date().toISOString(),
-      showDeleted: false,
-      singleEvents: true,
-      orderBy: 'startTime',
-    }).then((response) => {
-      const googleEvents = response.result.items.map((event, index) => ({
-        id: event.id || index,
-        title: event.summary || 'No Title',
+  const handleAuthClick = async () => {
+    try {
+      const GoogleAuth = gapi.auth2.getAuthInstance();
+      const user = await GoogleAuth.signIn();
+      const accessToken = user.getAuthResponse().access_token;
+      setUser({
+        name: user.getBasicProfile().getName(),
+        email: user.getBasicProfile().getEmail(),
+      });
+      setToken(accessToken);
+      localStorage.setItem("accessToken", accessToken); // Store the token
+      loadCalendarEvents(accessToken);
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
+
+  // Load events from Google Calendar
+  const loadCalendarEvents = async (accessToken) => {
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      const googleEvents = data.items.map((event) => ({
+        id: event.id,
+        title: event.summary || "No Title",
         start: new Date(event.start.dateTime || event.start.date),
         end: new Date(event.end.dateTime || event.end.date),
-        color: '#4285F4',  // Default colour
+        color: "#4285F4",
       }));
-      setEvents([...events, ...googleEvents]);
-    }).catch(error => {
-      console.error('Error loading Google Calendar events:', error);
-    });
+      setEvents(googleEvents);
+    } catch (error) {
+      console.error("Error loading events:", error);
+    }
   };
 
-  // Handle date change in small calendar
+  const handleSaveEvent = async () => {
+    const startDate = moment(selectedDate)
+      .set({
+        hour: newEvent.startTime.split(":")[0],
+        minute: newEvent.startTime.split(":")[1],
+      })
+      .toDate();
+    const endDate = moment(selectedDate)
+      .set({
+        hour: newEvent.endTime.split(":")[0],
+        minute: newEvent.endTime.split(":")[1],
+      })
+      .toDate();
+
+    const eventToAdd = {
+      summary: newEvent.title || "No Title",
+      start: { dateTime: startDate.toISOString() },
+      end: { dateTime: endDate.toISOString() },
+    };
+
+    try {
+      await fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(eventToAdd),
+        }
+      );
+      loadCalendarEvents(token);
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Error saving event:", error);
+    }
+  };
+
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      loadCalendarEvents(token);
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setViewDate(date);
   };
 
-  // handle click on a date
   const handleDateClick = (date) => {
     setSelectedDate(date);
     openModal();
   };
 
-  // modal management
   const openModal = () => setModalOpen(true);
   const closeModal = () => {
     setModalOpen(false);
-    setNewEvent({ title: '', startTime: '', endTime: '', color: '#61dafb' });
+    setNewEvent({ title: "", startTime: "", endTime: "", color: "#61dafb" });
   };
 
-  // Save a new event and add to Google Calendar
-  const handleSaveEvent = () => {
-    // defaukt event
-    const eventTitle = newEvent.title.trim() === '' ? 'No Title' : newEvent.title;
-
-    // default to the beginning and end of the day if times are not provided
-    const startDate = newEvent.startTime
-      ? moment(selectedDate).set({
-          hour: newEvent.startTime.split(':')[0],
-          minute: newEvent.startTime.split(':')[1]
-      }).toDate()
-      : moment(selectedDate).startOf('day').toDate();
-
-    const endDate = newEvent.endTime
-      ? moment(selectedDate).set({
-          hour: newEvent.endTime.split(':')[0],
-          minute: newEvent.endTime.split(':')[1]
-      }).toDate()
-      : moment(selectedDate).endOf('day').toDate();
-
-    // endDate is after startDate
-    if (endDate <= startDate) {
-      alert("End time must be after start time.");
-      return;
-    }
-
-    const eventToAdd = {
-      id: Date.now(),
-      title: eventTitle,
-      start: startDate,
-      end: endDate,
-      allDay: false,
-      color: newEvent.color,
-    };
-
-    setEvents([...events, eventToAdd]);
-
-    gapi.client.calendar.events.insert({
-      calendarId: 'primary',
-      resource: {
-        summary: eventTitle,
-        start: { dateTime: startDate.toISOString(), timeZone: 'America/Los_Angeles' },
-        end: { dateTime: endDate.toISOString(), timeZone: 'America/Los_Angeles' },
-      }
-    }).then(() => loadCalendarEvents()).catch(error => {
-      console.error('Error saving event to Google Calendar:', error);
-    });
-
-    closeModal();
-  };
-
-  // delete an event
-  const handleDeleteEvent = (eventToDelete) => {
-    setEvents(events.filter(event => event.id !== eventToDelete.id));
-    gapi.client.calendar.events.delete({
-      calendarId: 'primary',
-      eventId: eventToDelete.id
-    }).then(() => loadCalendarEvents()).catch(error => {
-      console.error('Error deleting Google Calendar event:', error);
-    });
-  };
-
-  // update monthly events on view date change
   useEffect(() => {
-    const filteredEvents = events.filter(event => moment(event.start).isSame(viewDate, 'month'));
+    const filteredEvents = events.filter((event) =>
+      moment(event.start).isSame(viewDate, "month")
+    );
     setMonthlyEvents(filteredEvents);
   }, [viewDate, events]);
 
   return (
-    <div className="App" style={{ display: 'flex', margin: '20px' }}>
+    <div className="App" style={{ display: "flex", margin: "20px" }}>
       <div className="small-calendar">
         {user ? (
           <h3>Welcome, {user.name}!</h3>
         ) : (
-          <button onClick={handleAuthClick} className="auth-button">Connect with Google Calendar</button>
+          <button onClick={handleAuthClick} className="auth-button">
+            Connect with Google Calendar
+          </button>
         )}
-        <Calendar onChange={handleDateChange} value={selectedDate} />
+        <CalendarView onChange={handleDateChange} value={selectedDate} />
         <div className="event-summary">
-          <h3>Events for {moment(viewDate).format('MMMM YYYY')}</h3>
+          <h3>Events for {moment(viewDate).format("MMMM YYYY")}</h3>
           {monthlyEvents.length === 0 ? (
             <p>No events planned.</p>
           ) : (
             <ul>
               {monthlyEvents.map((event) => (
                 <li key={event.id}>
-                  {moment(event.start).format('MM/DD/YYYY')} - {event.title}
-                  <button onClick={() => handleDeleteEvent(event)} className="delete-button">Delete</button>
+                  {moment(event.start).format("MM/DD/YYYY")} - {event.title}
+                  <button
+                    onClick={() => handleDeleteEvent(event)}
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -222,11 +242,11 @@ const App = () => {
           eventPropGetter={(event) => ({
             style: {
               backgroundColor: event.color,
-              borderRadius: '5px',
+              borderRadius: "5px",
               opacity: 0.8,
-              color: 'white',
-              border: '0px',
-            }
+              color: "white",
+              border: "0px",
+            },
           })}
         />
       </div>
@@ -251,24 +271,31 @@ const App = () => {
           <input
             type="time"
             value={newEvent.startTime}
-            onChange={(e) => setNewEvent({ ...newEvent, startTime: e.target.value })}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, startTime: e.target.value })
+            }
           />
-          <label style={{ marginLeft: '10px' }}>End Time: </label>
+          <label style={{ marginLeft: "10px" }}>End Time: </label>
           <input
             type="time"
             value={newEvent.endTime}
-            onChange={(e) => setNewEvent({ ...newEvent, endTime: e.target.value })}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, endTime: e.target.value })
+            }
           />
         </div>
         <TwitterPicker
           color={newEvent.color}
-          onChangeComplete={(color) => setNewEvent({ ...newEvent, color: color.hex })}
+          onChangeComplete={(color) =>
+            setNewEvent({ ...newEvent, color: color.hex })
+          }
         />
-        <button onClick={handleSaveEvent} className="save-button">Save Event</button>
-        <button onClick={closeModal} className="cancel-button">Cancel</button>
+        <button onClick={handleSaveEvent} className="save-button">
+          Save Event
+        </button>
       </Modal>
     </div>
   );
 };
 
-export default App;
+export default Calendar;
