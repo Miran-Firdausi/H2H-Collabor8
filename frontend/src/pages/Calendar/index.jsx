@@ -20,7 +20,7 @@ const apiKey = '';
 
 Modal.setAppElement('#root');
 
-const App = () => {
+const Calendarapp = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [viewDate, setViewDate] = useState(new Date());
   const [events, setEvents] = useState([]);
@@ -271,4 +271,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Calendarapp;

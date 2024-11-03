@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Home, CheckSquare, Layout, Github, Users, Zap, Shield, Clock } from 'lucide-react';
+import { Menu, Home, CheckSquare, Layout, Github, Users, Zap, Shield, Clock,CalendarMinus2 } from 'lucide-react';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -50,6 +50,10 @@ const LandingPage = () => {
               <Link to="/gitboard" className="nav-link">
                 <Github size={20} />
                 <span>GitHub</span>
+              </Link>
+              <Link to="/calendar" className="nav-link">
+              <CalendarMinus2 size={20} />
+                <span>Calendar</span>
               </Link>
             </div>
           )}

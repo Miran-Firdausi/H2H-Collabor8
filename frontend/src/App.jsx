@@ -5,7 +5,7 @@ import ToDo from "./pages/ToDo";
 import Board from "./pages/taskboard";
 import GitHubDashboard from "./pages/GithubDashboard";
 import LandingPage from "./pages/LandingPage";
-import Calendar from "./pages/Calendar";
+import Calendarapp from "./pages/Calendar";
 const App = () => {
   return (
     <Router>
@@ -14,7 +14,7 @@ const App = () => {
         <Route path="/todo" element={<ToDo />} />
         <Route path="/board" element={<Board />} />
         <Route path="/gitboard" element={<GitHubDashboard />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/calendar" element={<Calendarapp />} />
       </Routes>
     </Router>
   );
