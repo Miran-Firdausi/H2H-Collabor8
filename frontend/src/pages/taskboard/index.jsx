@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Board.css";
 
 const Board = () => {
@@ -8,11 +8,11 @@ const Board = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingTask, setEditingTask] = useState(null);
-
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const projectNameDefault = params.get("name");
   // Calculate initial position for each task in a grid layout
   const calculatePosition = (index) => {
-    const [searchParams] = useSearchParams();
-    const projectId = searchParams.get("project");
     const SPACING = 220; // Width of sticky note plus margin
     const VERTICAL_SPACING = 250; // Height of sticky note plus margin
     const ITEMS_PER_ROW = 4; // Number of items per row
@@ -25,7 +25,6 @@ const Board = () => {
       y: 100 + row * VERTICAL_SPACING,
     };
   };
-
   useEffect(() => {
     const savedTasks = localStorage.getItem("stickyNotes");
     if (savedTasks) {
@@ -93,7 +92,7 @@ const Board = () => {
   return (
     <div>
       <div className="board-header">
-        <h2 className="title">Sticky Board</h2>
+        <h2 className="title">{projectNameDefault ? projectNameDefault : "Sticky Board"}</h2>
       </div>
       <div className="miro-board">
         <form onSubmit={addTask} className="task-input">

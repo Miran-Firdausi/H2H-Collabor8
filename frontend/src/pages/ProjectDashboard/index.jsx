@@ -113,7 +113,7 @@ const ProjectsDashboard = () => {
                   <button
                     className="btn btn-outline btn-dashboard"
                     onClick={() =>
-                      (window.location.href = `/AdminDashboard?project=${project.id}`)
+                      (window.location.href = `/AdminDashboard?project=${project.id}&name=${encodeURIComponent(project.name)}`)
                     }
                   >
                     <ArrowRight size={16} />
@@ -140,7 +140,7 @@ const ProjectsDashboard = () => {
                   <button
                     className="btn btn-outline"
                     onClick={() =>
-                      (window.location.href = `/todo?project=${project.id}`)
+                      (window.location.href = `/todo?project=${project.id}&name=${encodeURIComponent(project.name)}`)
                     }
                   >
                     <CheckSquare size={16} />
@@ -149,7 +149,7 @@ const ProjectsDashboard = () => {
                   <button
                     className="btn btn-outline"
                     onClick={() =>
-                      (window.location.href = `/board?project=${project.id}`)
+                      (window.location.href = `/board?project=${project.id}&name=${encodeURIComponent(project.name)}`)
                     }
                   >
                     <Layout size={16} />
@@ -158,7 +158,7 @@ const ProjectsDashboard = () => {
                   <button
                     className="btn btn-outline"
                     onClick={() =>
-                      (window.location.href = `/gitboard?project=${project.id}`)
+                      (window.location.href = `/gitboard?project=${project.id}&name=${encodeURIComponent(project.name)}`)
                     }
                   >
                     <Github size={16} />
@@ -167,7 +167,7 @@ const ProjectsDashboard = () => {
                   <button
                     className="btn btn-outline"
                     onClick={() =>
-                      (window.location.href = `/calendar?project=${project.id}`)
+                      (window.location.href = `/calendar?project=${project.id}&name=${encodeURIComponent(project.name)}`)
                     }
                   >
                     <Calendar size={16} />
