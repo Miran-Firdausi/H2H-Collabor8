@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "projects",
     "task_automation",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
