@@ -14,6 +14,10 @@ function Navbar() {
 
         {isSignedIn ? (
           <div className="nav-links">
+            <Link to="/projects" className="nav-link">
+              <Layout size={20} />
+              <span>Projects</span>
+            </Link>
             <Link to="/todo" className="nav-link">
               <CheckSquare size={20} />
               <span>Todo</span>
