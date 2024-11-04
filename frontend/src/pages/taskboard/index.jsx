@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import "./Board.css";
 
 const Board = () => {
@@ -11,6 +11,8 @@ const Board = () => {
 
   // Calculate initial position for each task in a grid layout
   const calculatePosition = (index) => {
+    const [searchParams] = useSearchParams();
+    const projectId = searchParams.get("project");
     const SPACING = 220; // Width of sticky note plus margin
     const VERTICAL_SPACING = 250; // Height of sticky note plus margin
     const ITEMS_PER_ROW = 4; // Number of items per row

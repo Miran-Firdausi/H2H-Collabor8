@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus,
   CheckSquare,
@@ -7,7 +7,10 @@ import {
   Calendar,
   ArrowRight,
   Folder,
+  Trash,
 } from "lucide-react";
+import axios from "axios";
+
 import "./ProjectDashboard.css";
 
 const ProjectsDashboard = () => {
@@ -15,25 +18,73 @@ const ProjectsDashboard = () => {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDescription, setNewProjectDescription] = useState("");
   const [projects, setProjects] = useState([]);
-
+  const availableStatus = ["active", "completed", "archived"];
+  const [status, setStatus] = useState(availableStatus[0]);
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/projects/")
+      .then((response) => {
+        setProjects(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the projects!", error);
+      });
+  }, []);
+  const handleDeleteProject = (projectId) => {
+    axios
+      .delete(`http://127.0.0.1:8000/projects/${projectId}/`)
+      .then(() => {
+        // Filter out the deleted project from the projects list
+        setProjects(projects.filter((project) => project.id !== projectId));
+      })
+      .catch((error) =>
+        console.error("There was an error deleting the project!", error)
+      );
+  };
   const handleCreateProject = () => {
     if (newProjectName.trim()) {
       const newProject = {
-        id: Date.now(),
         name: newProjectName,
         description: newProjectDescription,
-        created: new Date().toISOString().split("T")[0],
+        status: status,
       };
-      setProjects([...projects, newProject]);
-      setShowNewProjectDialog(false);
-      setNewProjectName("");
-      setNewProjectDescription("");
+
+      axios
+        .post("http://127.0.0.1:8000/projects/", newProject)
+        .then((response) => {
+          setProjects([...projects, response.data]);
+          setShowNewProjectDialog(false);
+          setNewProjectName("");
+          setNewProjectDescription("");
+        })
+        .catch((error) => {
+          console.error("There was an error creating the project!", error);
+        });
     }
+  };
+
+  const handleStatusChange = (projectId, newStatus) => {
+    axios
+      .patch(`http://127.0.0.1:8000/projects/${projectId}/`, {
+        status: newStatus,
+      })
+      .then((response) => {
+        setProjects(
+          projects.map((project) =>
+            project.id === projectId
+              ? { ...project, status: newStatus }
+              : project
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("There was an error updating the status!", error);
+      });
   };
 
   return (
     <div className="dashboard">
-      {/* Header Section */}
       <div className="dashboard-container">
         <div className="dashboard-header">
           <div>
@@ -49,7 +100,6 @@ const ProjectsDashboard = () => {
           </button>
         </div>
 
-        {/* Projects Grid */}
         <div className="projects-grid">
           {projects.map((project) => (
             <div key={project.id} className="project-card">
@@ -59,7 +109,7 @@ const ProjectsDashboard = () => {
                   <h2>{project.name}</h2>
                 </div>
                 <div className="project-date">
-                  Created on {project.created}
+                  Created on {project.created_at}
                   <button
                     className="btn btn-outline btn-dashboard"
                     onClick={() =>
@@ -73,7 +123,19 @@ const ProjectsDashboard = () => {
               </div>
               <div className="project-card-content">
                 <p className="project-description">{project.description}</p>
-
+                <select
+                  value={project.status}
+                  onChange={(e) =>
+                    handleStatusChange(project.id, e.target.value)
+                  }
+                >
+                  {availableStatus.map((statusOption) => (
+                    <option key={statusOption} value={statusOption}>
+                      {statusOption.charAt(0).toUpperCase() +
+                        statusOption.slice(1)}
+                    </option>
+                  ))}
+                </select>
                 <div className="project-actions">
                   <button
                     className="btn btn-outline"
@@ -111,6 +173,13 @@ const ProjectsDashboard = () => {
                     <Calendar size={16} />
                     Calendar
                   </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDeleteProject(project.id)}
+                  >
+                    <Trash size={16} />
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
@@ -118,7 +187,6 @@ const ProjectsDashboard = () => {
         </div>
       </div>
 
-      {/* New Project Dialog */}
       {showNewProjectDialog && (
         <div className="dialog-overlay">
           <div className="dialog">
