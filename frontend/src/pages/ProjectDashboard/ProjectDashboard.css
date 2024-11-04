@@ -71,6 +71,8 @@
   .project-date {
     font-size: 0.875rem;
     color: #6b7280;
+    display: flex;
+    justify-content: space-between;
   }
   
   .project-card-content {
@@ -219,3 +221,5 @@
       grid-template-columns: 1fr;
     }
   }
+
+    
