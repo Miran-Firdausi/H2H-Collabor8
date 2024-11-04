@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
-import { 
-  Plus, 
-  CheckSquare, 
-  Layout, 
-  Github, 
+import React, { useState } from "react";
+import {
+  Plus,
+  CheckSquare,
+  Layout,
+  Github,
   Calendar,
   ArrowRight,
-  Folder
-} from 'lucide-react';
-import './ProjectDashboard.css'
+  Folder,
+} from "lucide-react";
+import "./ProjectDashboard.css";
+
 const ProjectsDashboard = () => {
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
-  const [newProjectName, setNewProjectName] = useState('');
-  const [newProjectDescription, setNewProjectDescription] = useState('');
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDescription, setNewProjectDescription] = useState("");
   const [projects, setProjects] = useState([]);
 
   const handleCreateProject = () => {
     if (newProjectName.trim()) {
-      setProjects([
-        ...projects,
-        {
-          id: Date.now(),
-          name: newProjectName,
-          description: newProjectDescription,
-          created: new Date().toISOString().split('T')[0]
-        }
-      ]);
+      const newProject = {
+        id: Date.now(),
+        name: newProjectName,
+        description: newProjectDescription,
+        created: new Date().toISOString().split("T")[0],
+      };
+      setProjects([...projects, newProject]);
       setShowNewProjectDialog(false);
-      setNewProjectName('');
-      setNewProjectDescription('');
+      setNewProjectName("");
+      setNewProjectDescription("");
     }
   };
 
@@ -41,7 +40,7 @@ const ProjectsDashboard = () => {
             <h1>My Projects</h1>
             <p>Manage and access all your projects</p>
           </div>
-          <button 
+          <button
             className="btn btn-primary"
             onClick={() => setShowNewProjectDialog(true)}
           >
@@ -59,25 +58,56 @@ const ProjectsDashboard = () => {
                   <Folder className="icon-blue" size={20} />
                   <h2>{project.name}</h2>
                 </div>
-                <p className="project-date">Created on {project.created}</p>
+                <div className="project-date">
+                  Created on {project.created}
+                  <button
+                    className="btn btn-outline btn-dashboard"
+                    onClick={() =>
+                      (window.location.href = `/AdminDashboard?project=${project.id}`)
+                    }
+                  >
+                    <ArrowRight size={16} />
+                    Dashboard
+                  </button>
+                </div>
               </div>
               <div className="project-card-content">
                 <p className="project-description">{project.description}</p>
-                
+
                 <div className="project-actions">
-                  <button className="btn btn-outline" onClick={() => window.location.href = `/todo?project=${project.id}`}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() =>
+                      (window.location.href = `/todo?project=${project.id}`)
+                    }
+                  >
                     <CheckSquare size={16} />
                     Tasks
                   </button>
-                  <button className="btn btn-outline" onClick={() => window.location.href = `/board?project=${project.id}`}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() =>
+                      (window.location.href = `/board?project=${project.id}`)
+                    }
+                  >
                     <Layout size={16} />
                     Board
                   </button>
-                  <button className="btn btn-outline" onClick={() => window.location.href = `/gitboard?project=${project.id}`}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() =>
+                      (window.location.href = `/gitboard?project=${project.id}`)
+                    }
+                  >
                     <Github size={16} />
                     GitHub
                   </button>
-                  <button className="btn btn-outline" onClick={() => window.location.href = `/calendar?project=${project.id}`}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() =>
+                      (window.location.href = `/calendar?project=${project.id}`)
+                    }
+                  >
                     <Calendar size={16} />
                     Calendar
                   </button>
@@ -117,7 +147,10 @@ const ProjectsDashboard = () => {
               </div>
             </div>
             <div className="dialog-footer">
-              <button className="btn btn-outline" onClick={() => setShowNewProjectDialog(false)}>
+              <button
+                className="btn btn-outline"
+                onClick={() => setShowNewProjectDialog(false)}
+              >
                 Cancel
               </button>
               <button className="btn btn-primary" onClick={handleCreateProject}>

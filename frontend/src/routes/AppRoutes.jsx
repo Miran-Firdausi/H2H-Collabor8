@@ -11,6 +11,7 @@ import Calendar from "../pages/Calendar";
 import PrivateRoute from "./PrivateRoute";
 import Navbar from "../components/Navbar";
 import ProjectsDashboard from "../pages/ProjectDashboard";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -24,8 +25,15 @@ const AppRoutes = () => {
           path="/gitboard"
           element={<PrivateRoute element={GitHubDashboard} />}
         />
-        <Route path="/projects" element={<PrivateRoute element={ProjectsDashboard} />} />
+        <Route
+          path="/projects"
+          element={<PrivateRoute element={ProjectsDashboard} />}
+        />
         <Route path="/calendar" element={<PrivateRoute element={Calendar} />} />
+        <Route
+          path="/AdminDashboard"
+          element={<PrivateRoute element={AdminDashboard} />}
+        />
         {/* <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} /> */}
       </Routes>
