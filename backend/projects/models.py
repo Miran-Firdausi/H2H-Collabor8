@@ -15,7 +15,9 @@ class Project(models.Model):
             ("archived", "Archived"),
         ],
     )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
 
 
 class Task(models.Model):

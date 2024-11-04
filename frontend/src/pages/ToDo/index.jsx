@@ -14,12 +14,17 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { format, addDays } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from "axios";
 import "./ToDo.css";
 
+
 const ToDo = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const projectNameDefault = params.get("name");
   const [tasks, setTasks] = useState([]);
   const [projectName, setProjectName] = useState("To-Do");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -42,6 +47,18 @@ const ToDo = () => {
     projectName: "",
     projectDescription: "",
   });
+
+  useEffect(()=>{
+    if(projectNameDefault){
+      
+      setProjectName(projectNameDefault);
+    }
+    else{
+      setProjectName('To-do')
+    }
+  },[])
+  
+
 
   // Function to check if a task can be moved to a new status
   const canChangeStatus = (taskId, newStatus) => {
@@ -179,7 +196,7 @@ const ToDo = () => {
           },
         }
       );
-
+      
       setProjectName(automateForm.projectName);
       const generatedTasks = response.data.tasks.map((task) => {
         const currentDate = new Date();
