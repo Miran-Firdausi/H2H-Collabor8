@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from accounts.models import UserAccount  # Import the custom user model
 
 
 class Project(models.Model):
@@ -15,7 +15,14 @@ class Project(models.Model):
             ("archived", "Archived"),
         ],
     )
+<<<<<<< HEAD
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+=======
+    # owner = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.name)
+>>>>>>> 0eb79a5 (backend djoser auth alerts)
 
 
 class Task(models.Model):
@@ -32,7 +39,7 @@ class Task(models.Model):
     priority = models.PositiveSmallIntegerField(
         choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
     )
-    assignee = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    assignee = models.ForeignKey(UserAccount, null=True, blank=True, on_delete=models.SET_NULL)
     parent = models.ForeignKey(
         "self", null=True, blank=True, related_name="subtasks", on_delete=models.CASCADE
     )
@@ -42,7 +49,7 @@ class Task(models.Model):
 
 
 class Collaborator(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     project = models.ForeignKey(
         Project, related_name="collaborators", on_delete=models.CASCADE
     )
@@ -57,7 +64,7 @@ class Collaborator(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.role} in project {self.project.name}"
+        return f"{self.user.email} - {self.role} in project {self.project.name}"
 
 
 class Team(models.Model):
@@ -73,12 +80,12 @@ class Team(models.Model):
 
 
 class TeamMember(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, related_name="members", on_delete=models.CASCADE)
     joined_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} in team {self.team.name}"
+        return f"{self.user.email} in team {self.team.name}"
 
 
 class Sprint(models.Model):
@@ -116,6 +123,6 @@ class KanbanColumn(models.Model):
 
 class Comment(models.Model):
     task = models.ForeignKey(Task, related_name="comments", on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
