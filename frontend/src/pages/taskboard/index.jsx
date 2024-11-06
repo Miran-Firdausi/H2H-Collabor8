@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import "./Board.css";
 
 const Board = () => {
@@ -8,6 +8,9 @@ const Board = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingTask, setEditingTask] = useState(null);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const projectNameDefault = params.get("name");
 
   // Calculate initial position for each task in a grid layout
   const calculatePosition = (index) => {
@@ -91,7 +94,7 @@ const Board = () => {
   return (
     <div>
       <div className="board-header">
-        <h2 className="title">Sticky Board</h2>
+        <h2 className="title">{projectNameDefault ? projectNameDefault : "Sticky Board"}</h2>
       </div>
       <div className="miro-board">
         <form onSubmit={addTask} className="task-input">
