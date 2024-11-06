@@ -27,3 +27,4 @@ def project_detail(request, pk):
     if request.method == 'DELETE':
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
