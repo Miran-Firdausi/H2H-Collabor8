@@ -1,7 +1,6 @@
 from django.db import models
 from accounts.models import UserAccount  # Import the custom user model
 
-
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -15,14 +14,14 @@ class Project(models.Model):
             ("archived", "Archived"),
         ],
     )
-<<<<<<< HEAD
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-=======
-    # owner = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
+
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+   
+    owner = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     
     def __str__(self):
         return str(self.name)
->>>>>>> 0eb79a5 (backend djoser auth alerts)
+
 
 
 class Task(models.Model):
@@ -66,7 +65,6 @@ class Collaborator(models.Model):
     def __str__(self):
         return f"{self.user.email} - {self.role} in project {self.project.name}"
 
-
 class Team(models.Model):
     name = models.CharField(max_length=255)
     project = models.ForeignKey(
@@ -86,7 +84,6 @@ class TeamMember(models.Model):
 
     def __str__(self):
         return f"{self.user.email} in team {self.team.name}"
-
 
 class Sprint(models.Model):
     project = models.ForeignKey(
