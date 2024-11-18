@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckSquare, Layout, Github, Calendar, User } from "lucide-react";
+import { CheckSquare, Layout, Github, Calendar, User, MessageSquare, Users } from "lucide-react";
 import "./Navbar.css";
 
 function Navbar() {
@@ -33,6 +33,14 @@ function Navbar() {
             <Link to="/calendar" className="nav-link">
               <Calendar size={20} />
               <span>Calendar</span>
+            </Link>
+            <Link to="/chat" className="nav-link">
+                <MessageSquare size={20} />
+                <span>Chat</span>
+            </Link>
+            <Link to="/share" className="nav-link">
+                <Users size={20} />
+                <span>Discussions</span>
             </Link>
             <Link to="/profile" className="nav-link">
               <User size={20} />

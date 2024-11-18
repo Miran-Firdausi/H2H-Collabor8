@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Folder,
   Trash,
+  Share,
 } from "lucide-react";
 import axios from "axios";
 
@@ -179,6 +180,13 @@ const ProjectsDashboard = () => {
                   >
                     <Trash size={16} />
                     Delete
+                  </button>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() => handleShareProject(project.id)}
+                  >
+                    <Share size={16} />
+                    Share
                   </button>
                 </div>
               </div>

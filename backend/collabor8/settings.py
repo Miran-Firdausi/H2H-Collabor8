@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "projects",
     "task_automation",
     'rest_framework',
+    "channels", #chat
+    "chat", #chat
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "collabor8.wsgi.application"
 
+# added: ASGI application for Channels (chat)
+ASGI_APPLICATION = "collabor8.asgi.application"
+
+# added: Channel layers configuration (chat)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

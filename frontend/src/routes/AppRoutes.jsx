@@ -12,6 +12,8 @@ import PrivateRoute from "./PrivateRoute";
 import Navbar from "../components/Navbar";
 import ProjectsDashboard from "../pages/ProjectDashboard";
 import AdminDashboard from "../pages/AdminDashboard";
+import Chat from "../pages/Chat";
+import Share from "../pages/Share";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +32,8 @@ const AppRoutes = () => {
           element={<PrivateRoute element={ProjectsDashboard} />}
         />
         <Route path="/calendar" element={<PrivateRoute element={Calendar} />} />
+        <Route path="/chat" element={<PrivateRoute element={Chat} />} />
+        <Route path="/share" element={<PrivateRoute element={Share} />} />
         <Route
           path="/AdminDashboard"
           element={<PrivateRoute element={AdminDashboard} />}
