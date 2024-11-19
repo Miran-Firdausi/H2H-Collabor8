@@ -1,16 +1,15 @@
-import { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
 
-const PrivateRoute = ({ element: Component }) => {
-  //   const { user } = useContext(AuthContext);
+const PrivateRoute = ({ component: Component }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  //   if (!user) {
-  //     // If the user is not logged in, redirect to the login page
-  //     return <Navigate to="/login" />;
-  //   }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-  // If the user is logged in, render the desired component
+  
   return <Component />;
 };
 
