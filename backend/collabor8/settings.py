@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    "rest_framework",
+    "channels",
     "projects",
     "task_automation",
-    'rest_framework',
+    "rtc",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = "collabor8.urls"
@@ -74,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "collabor8.wsgi.application"
+ASGI_APPLICATION = "collabor8.asgi.application"
 
 
 # Database
@@ -127,3 +131,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}

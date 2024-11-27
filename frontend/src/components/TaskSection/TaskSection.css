@@ -1,0 +1,85 @@
+/* Container for the entire task section */
+.task-section {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #f8f8f8;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+  flex: 1;
+  height: min-content;
+  overflow-y: auto;
+}
+
+.task-section.in-progress {
+  background-color: #eaf7ff;
+}
+
+.task-section.completed {
+  background-color: #eeffee;
+}
+
+/* Column header */
+.task-section h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 10px;
+  text-align: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.task-section p {
+  text-align: center;
+  color: #5e6c84;
+}
+
+/* Task list container */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+  min-height: 100px;
+  height: 100%;
+  justify-content: center;
+}
+
+/* Dragging over state for task lists */
+.task-list.dragging-over {
+  background-color: #e0f2fe;
+  border: 2px dashed #3b82f6;
+  border-radius: 6px;
+}
+
+/* Placeholder message for empty columns */
+.task-list::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+  display: block;
+}
+
+.add-task-column-button {
+  margin-top: 16px;
+  padding: 12px;
+  width: 100%;
+  background-color: #7cbbff3b;
+  color: #1178e6;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-task-column-button:hover {
+  background-color: #7cbbff58;
+}

@@ -255,7 +255,7 @@ const Calendar = () => {
         isOpen={modalOpen}
         onRequestClose={closeModal}
         contentLabel="Add Event"
-        className="modal"
+        className="calendar-modal"
         overlayClassName="overlay"
       >
         <h2>Add New Event</h2>
