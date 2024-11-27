@@ -36,8 +36,6 @@
 
 .input:focus {
   outline: none;
-  ring: 2px;
-  ring-color: #22c55e;
 }
 
 .button {
