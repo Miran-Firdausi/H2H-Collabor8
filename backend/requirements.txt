@@ -2,3 +2,4 @@ django-cors-headers
 pylint_django
 google-generativeai
 python-dotenv
+channels

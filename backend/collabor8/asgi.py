@@ -1,29 +1,23 @@
-"""
-ASGI config for collabor8 project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
-"""
-
 import os
+import django
 
 from django.core.asgi import get_asgi_application
-#for chat
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from chat import routing as chat_routing
+from rtc.routing import websocket_urlpatterns as rtc_websocket_urlpatterns
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "collabor8.settings")
+django.setup()
 
-#application = get_asgi_application()
-
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            chat_routing.websocket_urlpatterns
-        )
-    ),
-})
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(
+            URLRouter(
+                chat_routing.websocket_urlpatterns
+                + rtc_websocket_urlpatterns  # Merging both routing lists
+            )
+        ),
+    }
+)

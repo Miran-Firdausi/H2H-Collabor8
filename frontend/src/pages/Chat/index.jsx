@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ChatList from './ChatList';
-import ChatRoom from './ChatRoom';
-import NewChatModal from './NewChatModal';
-import './Chat.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import ChatList from "./ChatList";
+import ChatRoom from "./ChatRoom";
+import NewChatModal from "./NewChatModal";
+import "./Chat.css";
 
 const ChatPage = ({ userId }) => {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [showNewChatModal, setShowNewChatModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -19,17 +19,19 @@ const ChatPage = ({ userId }) => {
 
   const fetchChats = async () => {
     try {
-      const response = await axios.get('/api/chats/my_chats/');
+      const response = await axios.get("/api/chats/my_chats/");
       setChats(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error fetching chats:', error);
-      setError('Failed to load chats.');
+      console.error("Error fetching chats:", error);
+      setError("Failed to load chats.");
     }
   };
 
   const fetchDefaultAIChat = async () => {
     try {
-      const response = await axios.post('/api/chats/create_or_get_ai_chat/');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/chats/create_or_get_ai_chat/"
+      );
       if (response && response.data) {
         setChats((prevChats) => {
           if (!prevChats.some((chat) => chat.id === response.data.id)) {
@@ -39,15 +41,16 @@ const ChatPage = ({ userId }) => {
         });
       }
     } catch (error) {
-      console.error('Error fetching default AI chat:', error);
+      console.error("Error fetching default AI chat:", error);
     }
   };
 
-  const filteredChats = chats.filter((chat) =>
-    chat.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    chat.participants?.some((p) =>
-      p.username.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+  const filteredChats = chats.filter(
+    (chat) =>
+      chat.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      chat.participants?.some((p) =>
+        p.username.toLowerCase().includes(searchTerm.toLowerCase())
+      )
   );
 
   const handleChatSelect = (chat) => {
@@ -58,11 +61,11 @@ const ChatPage = ({ userId }) => {
     try {
       let response;
       if (chatData.is_ai_chat) {
-        response = await axios.post('/api/chats/create_or_get_ai_chat/');
+        response = await axios.post("/api/chats/create_or_get_ai_chat/");
       } else if (chatData.is_group_chat) {
-        response = await axios.post('/api/chats/', chatData);
+        response = await axios.post("/api/chats/", chatData);
       } else {
-        response = await axios.post('/api/chats/create_or_get_private_chat/', {
+        response = await axios.post("/api/chats/create_or_get_private_chat/", {
           user_id: chatData.participants[0],
         });
       }
@@ -76,8 +79,8 @@ const ChatPage = ({ userId }) => {
 
       setShowNewChatModal(false);
     } catch (error) {
-      console.error('Error creating new chat:', error);
-      setError('Failed to create new chat.');
+      console.error("Error creating new chat:", error);
+      setError("Failed to create new chat.");
     }
   };
 
@@ -116,7 +119,9 @@ const ChatPage = ({ userId }) => {
             isAiChat={selectedChat.is_ai_chat}
           />
         ) : (
-          <div className="no-chat-selected">Select a chat and start messaging</div>
+          <div className="no-chat-selected">
+            Select a chat and start messaging
+          </div>
         )}
       </div>
       {showNewChatModal && (

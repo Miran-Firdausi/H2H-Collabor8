@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckSquare, Layout, Github, Calendar, User, MessageSquare, Users } from "lucide-react";
+import { MessageCircleMore, Layout, Bell, User, Users } from "lucide-react";
 import "./Navbar.css";
 
 function Navbar() {
@@ -9,6 +9,7 @@ function Navbar() {
     <nav className="nav-bar">
       <div className="nav-content">
         <Link to="/" className="logo">
+          <img className="logo-img" src="/skillmingle-logo.jpg" />
           <span>Colabor8</span>
         </Link>
 
@@ -16,27 +17,15 @@ function Navbar() {
           <div className="nav-links">
             <Link to="/projects" className="nav-link">
               <Layout size={20} />
-              <span>Projects</span>
-            </Link>
-            <Link to="/todo" className="nav-link">
-              <CheckSquare size={20} />
-              <span>Todo</span>
-            </Link>
-            <Link to="/board" className="nav-link">
-              <Layout size={20} />
-              <span>Board</span>
-            </Link>
-            <Link to="/gitboard" className="nav-link">
-              <Github size={20} />
-              <span>GitHub</span>
-            </Link>
-            <Link to="/calendar" className="nav-link">
-              <Calendar size={20} />
-              <span>Calendar</span>
+              <span>My Projects</span>
             </Link>
             <Link to="/chat" className="nav-link">
-                <MessageSquare size={20} />
-                <span>Chat</span>
+              <MessageCircleMore size={20} />
+              <span>Chat</span>
+            </Link>
+            <Link to="/notifications" className="nav-link">
+              <Bell size={20} />
+              <span>Notifications</span>
             </Link>
             <Link to="/share" className="nav-link">
                 <Users size={20} />

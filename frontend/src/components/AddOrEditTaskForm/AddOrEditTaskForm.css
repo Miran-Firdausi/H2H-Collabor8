@@ -1,0 +1,90 @@
+/* Container for the entire Add Task Form */
+.add-task-form-container {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 800px;
+  background-color: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  z-index: 1000;
+}
+
+.add-task-form-title {
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.add-task-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.add-task-form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.add-task-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-task-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.dropdown-input {
+  cursor: pointer;
+}
+
+.add-task-assignee-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.add-task-assignee-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.add-task-dependency-section {
+  grid-column: span 2;
+}
+
+.add-task-dependency-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-task-modal-buttons {
+  margin-top: 12px;
+  float: right;
+  display: flex;
+  gap: 8px;
+}
+
+.task-dependencies-title {
+  font-weight: 500;
+}
