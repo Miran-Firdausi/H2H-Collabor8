@@ -21,9 +21,17 @@ const ProjectsDashboard = () => {
   const [projects, setProjects] = useState([]);
   const availableStatus = ["active", "completed", "archived"];
   const [status, setStatus] = useState(availableStatus[0]);
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `JWT ${localStorage.getItem("access")}`,
+      Accept: "application/json",
+    },
+  };
+
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/projects/")
+      .get("http://127.0.0.1:8000/projects/", config)
       .then((response) => {
         setProjects(response.data);
         console.log(response.data);
@@ -32,9 +40,10 @@ const ProjectsDashboard = () => {
         console.error("There was an error fetching the projects!", error);
       });
   }, []);
+
   const handleDeleteProject = (projectId) => {
     axios
-      .delete(`http://127.0.0.1:8000/projects/${projectId}/`)
+      .delete(`http://127.0.0.1:8000/projects/${projectId}/`, config)
       .then(() => {
         // Filter out the deleted project from the projects list
         setProjects(projects.filter((project) => project.id !== projectId));
@@ -52,7 +61,7 @@ const ProjectsDashboard = () => {
       };
 
       axios
-        .post("http://127.0.0.1:8000/projects/", newProject)
+        .post("http://127.0.0.1:8000/projects/", newProject, config)
         .then((response) => {
           setProjects([...projects, response.data]);
           setShowNewProjectDialog(false);
@@ -67,9 +76,13 @@ const ProjectsDashboard = () => {
 
   const handleStatusChange = (projectId, newStatus) => {
     axios
-      .patch(`http://127.0.0.1:8000/projects/${projectId}/`, {
-        status: newStatus,
-      })
+      .patch(
+        `http://127.0.0.1:8000/projects/${projectId}/`,
+        {
+          status: newStatus,
+        },
+        config
+      )
       .then((response) => {
         setProjects(
           projects.map((project) =>
