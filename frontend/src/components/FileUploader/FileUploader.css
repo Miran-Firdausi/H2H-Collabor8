@@ -1,0 +1,47 @@
+.file-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px dashed #007bff; /* Border with dashed styling */
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto; /* Center the uploader horizontally */
+}
+
+.file-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.file-input:hover {
+  background-color: #0056b3;
+}
+
+.uploaded-files {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.uploaded-files p {
+  font-size: 14px;
+  color: #555;
+  background: #f1f1f1;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

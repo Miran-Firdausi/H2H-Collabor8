@@ -1,0 +1,49 @@
+.file-viewer {
+  max-width: 1200px;
+  margin: 20px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* File Uploader */
+.file-uploader {
+  margin-bottom: 20px;
+}
+
+.file-input {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.uploaded-files p {
+  margin: 5px 0;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background-color: #ececec;
+  justify-content: center;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ececec;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  margin-top: 0px;
+  background-color: #fff;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 3px solid #23b345;
+}
+
+/* Tab Content */
+.tab-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}

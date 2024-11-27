@@ -7,6 +7,7 @@ import {
   Calendar,
   ArrowRight,
   Folder,
+  File,
   Trash,
 } from "lucide-react";
 import axios from "axios";
@@ -84,9 +85,9 @@ const ProjectsDashboard = () => {
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-container">
-        <div className="dashboard-header">
+    <div className="projects-dashboard">
+      <div className="projects-dashboard-container">
+        <div className="projects-dashboard-header">
           <div>
             <h1>My Projects</h1>
             <p>Manage and access all your projects</p>
@@ -101,89 +102,118 @@ const ProjectsDashboard = () => {
         </div>
 
         <div className="projects-grid">
-          {projects.map((project) => (
-            <div key={project.id} className="project-card">
-              <div className="project-card-header">
-                <div className="project-title">
-                  <Folder className="icon-blue" size={20} />
-                  <h2>{project.name}</h2>
+          {projects.map((project) => {
+            const createdAt = new Date(project.created_at);
+            const day = createdAt.getDate().toString().padStart(2, "0");
+            const month = (createdAt.getMonth() + 1)
+              .toString()
+              .padStart(2, "0");
+            const year = createdAt.getFullYear();
+            return (
+              <div key={project.id} className="project-card">
+                <div className="project-card-header">
+                  <div className="project-title">
+                    <Folder className="icon-blue" size={20} />
+                    <h2>{project.name}</h2>
+                  </div>
+                  <div className="project-date">
+                    Created on: {day}-{month}-{year}
+                    <button
+                      className="btn btn-outline btn-dashboard"
+                      onClick={() =>
+                        (window.location.href = `/AdminDashboard?project=${
+                          project.id
+                        }&name=${encodeURIComponent(project.name)}`)
+                      }
+                    >
+                      <ArrowRight size={16} />
+                      Dashboard
+                    </button>
+                  </div>
                 </div>
-                <div className="project-date">
-                  Created on {project.created_at}
-                  <button
-                    className="btn btn-outline btn-dashboard"
-                    onClick={() =>
-                      (window.location.href = `/AdminDashboard?project=${project.id}&name=${encodeURIComponent(project.name)}`)
+                <div className="project-card-content">
+                  <p className="project-description">{project.description}</p>
+                  <select
+                    value={project.status}
+                    onChange={(e) =>
+                      handleStatusChange(project.id, e.target.value)
                     }
                   >
-                    <ArrowRight size={16} />
-                    Dashboard
-                  </button>
+                    {availableStatus.map((statusOption) => (
+                      <option key={statusOption} value={statusOption}>
+                        {statusOption.charAt(0).toUpperCase() +
+                          statusOption.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="project-actions">
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        (window.location.href = `/project/tasks?name=${encodeURIComponent(
+                          project.name
+                        )}`)
+                      }
+                    >
+                      <CheckSquare size={16} />
+                      Tasks
+                    </button>
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        (window.location.href = `/project/board?name=${encodeURIComponent(
+                          project.name
+                        )}`)
+                      }
+                    >
+                      <Layout size={16} />
+                      Board
+                    </button>
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        (window.location.href = `/project/github?name=${encodeURIComponent(
+                          project.name
+                        )}`)
+                      }
+                    >
+                      <Github size={16} />
+                      GitHub
+                    </button>
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        (window.location.href = `/project/calendar?name=${encodeURIComponent(
+                          project.name
+                        )}`)
+                      }
+                    >
+                      <Calendar size={16} />
+                      Calendar
+                    </button>
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        (window.location.href = `/project/files?name=${encodeURIComponent(
+                          project.name
+                        )}`)
+                      }
+                    >
+                      <File size={16} />
+                      Files
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteProject(project.id)}
+                    >
+                      <Trash size={16} />
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="project-card-content">
-                <p className="project-description">{project.description}</p>
-                <select
-                  value={project.status}
-                  onChange={(e) =>
-                    handleStatusChange(project.id, e.target.value)
-                  }
-                >
-                  {availableStatus.map((statusOption) => (
-                    <option key={statusOption} value={statusOption}>
-                      {statusOption.charAt(0).toUpperCase() +
-                        statusOption.slice(1)}
-                    </option>
-                  ))}
-                </select>
-                <div className="project-actions">
-                  <button
-                    className="btn btn-outline"
-                    onClick={() =>
-                      (window.location.href = `/todo?project=${project.id}&name=${encodeURIComponent(project.name)}`)
-                    }
-                  >
-                    <CheckSquare size={16} />
-                    Tasks
-                  </button>
-                  <button
-                    className="btn btn-outline"
-                    onClick={() =>
-                      (window.location.href = `/board?project=${project.id}&name=${encodeURIComponent(project.name)}`)
-                    }
-                  >
-                    <Layout size={16} />
-                    Board
-                  </button>
-                  <button
-                    className="btn btn-outline"
-                    onClick={() =>
-                      (window.location.href = `/gitboard?project=${project.id}&name=${encodeURIComponent(project.name)}`)
-                    }
-                  >
-                    <Github size={16} />
-                    GitHub
-                  </button>
-                  <button
-                    className="btn btn-outline"
-                    onClick={() =>
-                      (window.location.href = `/calendar?project=${project.id}&name=${encodeURIComponent(project.name)}`)
-                    }
-                  >
-                    <Calendar size={16} />
-                    Calendar
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDeleteProject(project.id)}
-                  >
-                    <Trash size={16} />
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -216,13 +246,13 @@ const ProjectsDashboard = () => {
             </div>
             <div className="dialog-footer">
               <button
-                className="btn btn-outline"
+                className="btn btn-secondary"
                 onClick={() => setShowNewProjectDialog(false)}
               >
                 Cancel
               </button>
               <button className="btn btn-primary" onClick={handleCreateProject}>
-                Create Project
+                Create
               </button>
             </div>
           </div>
