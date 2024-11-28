@@ -286,16 +286,15 @@ const ProjectsDashboard = () => {
           </div>
         )}
       </div>
-
       {showNewProjectDialog && (
-        <div className="dialog-overlay">
-          <div className="dialog">
-            <div className="dialog-header">
+        <div className="project-dialog-overlay">
+          <div className="project-dialog">
+            <div className="project-dialog-header">
               <h2>Create New Project</h2>
               <p>Add a new project to organize your work</p>
             </div>
-            <div className="dialog-content">
-              <div className="form-group">
+            <div className="project-dialog-content">
+              <div className="project-dialog-form-group">
                 <label>Project Name</label>
                 <input
                   type="text"
@@ -304,16 +303,15 @@ const ProjectsDashboard = () => {
                   onChange={(e) => setNewProjectName(e.target.value)}
                 />
               </div>
-              <div className="form-group">
+              <div className="project-dialog-form-group">
                 <label>Description</label>
                 <textarea
-                  className="descp"
                   placeholder="Brief project description"
                   value={newProjectDescription}
                   onChange={(e) => setNewProjectDescription(e.target.value)}
                 />
               </div>
-              <div className="form-group">
+              <div className="project-dialog-form-group">
                 <label>Status</label>
                 <select
                   value={status}
@@ -328,15 +326,15 @@ const ProjectsDashboard = () => {
                 </select>
               </div>
             </div>
-            <div className="dialog-footer">
+            <div className="project-dialog-footer">
               <button
-                className="btn btn-secondary"
+                className="project-dialog-btn project-dialog-btn-secondary"
                 onClick={() => setShowNewProjectDialog(false)}
               >
                 Cancel
               </button>
               <button
-                className="btn btn-primary"
+                className="project-dialog-btn project-dialog-btn-primary"
                 onClick={handleCreateProject}
                 disabled={!newProjectName.trim()}
               >

@@ -42,6 +42,10 @@
   transition: all 0.1s ease;
 }
 
+.sidebar.expanded li {
+  padding: 1rem 2rem;
+}
+
 .sidebar li.active {
   background-color: #64789a;
   color: #fff;
