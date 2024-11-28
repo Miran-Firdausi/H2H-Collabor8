@@ -17,3 +17,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         validated_data['owner'] = request.user
         return super().create(validated_data)
+
+class DiscussionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discussion
+        fields = ["id", "title", "description", "additional_info", "created_at"]
+

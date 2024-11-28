@@ -1,160 +1,160 @@
 /* General Styles */
 .profile-page {
-    font-family: "Arial", sans-serif;
-    background-color: #f8fafc;
-    color: #394b3c;
-    line-height: 1.6;
-    padding: 2rem 2rem 4rem;
+  font-family: "Arial", sans-serif;
+  background-color: #f8fafc;
+  color: #394b3c;
+  line-height: 1.6;
+  padding: 2rem 2rem 4rem;
 }
 
 /* Header Styles */
 .profile-header {
-    text-align: center;
-    margin-bottom: 4rem; /* Increased spacing */
+  text-align: center;
+  margin-bottom: 4rem; /* Increased spacing */
 }
 
 /* Banner Styles */
 .profile-banner {
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.9),
-        rgba(255, 255, 255, 0.6)
-      ),
-      url("https://static.vecteezy.com/system/resources/previews/024/675/760/non_2x/green-background-hd-wallpaperss-free-download-free-vector.jpg");
-    background-size: cover;
-    background-position: center;
-    padding: 3rem 2rem; /* Increased padding */
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.6)
+    ),
+    url("https://static.vecteezy.com/system/resources/previews/024/675/760/non_2x/green-background-hd-wallpaperss-free-download-free-vector.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 3rem 2rem; /* Increased padding */
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-avatar-container {
-    margin: 0 auto 1.5rem; /* More space between avatar and text */
-    width: 150px;
-    height: 150px;
-    border: 4px solid #ffffff;
-    border-radius: 50%;
-    overflow: hidden;
+  margin: 0 auto 1.5rem; /* More space between avatar and text */
+  width: 150px;
+  height: 150px;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .profile-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-name {
-    font-size: 2rem;
-    color: #394b3c;
-    margin-bottom: 1rem; /* Added spacing below name */
+  font-size: 2rem;
+  color: #394b3c;
+  margin-bottom: 1rem; /* Added spacing below name */
 }
 
 .action-buttons {
-    margin-top: 1.5rem; /* Increased spacing for buttons */
+  margin-top: 1.5rem; /* Increased spacing for buttons */
 }
 
 .profile-button {
-    background-color: #22c55e;
-    color: white;
-    border: none;
-    padding: 0.7rem 2rem; /* Slightly larger buttons */
-    margin: 0 0.7rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 0.7rem 2rem; /* Slightly larger buttons */
+  margin: 0 0.7rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .profile-button:hover {
-    background-color: #16a34a;
+  background-color: #16a34a;
 }
 
 /* Section Spacing */
 .profile-section {
-    margin-bottom: 4rem; /* Increased spacing between sections */
+  margin-bottom: 4rem; /* Increased spacing between sections */
 }
 
 /* Badge and Projects Containers */
 .profile-section-container {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
-    font-size: 2rem; /* Increased font size for section titles */
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #394b3c;
+  font-size: 2rem; /* Increased font size for section titles */
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #394b3c;
 }
 
 /* Badges Section */
 .badges-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 2rem; /* Increased spacing between badges */
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 2rem; /* Increased spacing between badges */
+  justify-content: center;
 }
 
 .badge-card {
-    text-align: center;
+  text-align: center;
 }
 
 .badge-image {
-    width: 60px; /* Adjusted size */
-    height: 60px; /* Adjusted size */
-    border-radius: 50%;
-    object-fit: contain; /* Ensures the image fits within the frame without being cut off */
+  width: 60px; /* Adjusted size */
+  height: 60px; /* Adjusted size */
+  border-radius: 50%;
+  object-fit: contain; /* Ensures the image fits within the frame without being cut off */
 }
 
 .badge-title {
-    margin-top: 1rem;
-    font-weight: bold;
-    font-size: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 /* Projects Section */
-.projects-list {
-    margin-top: 2rem;
+.profile-section .projects-list {
+  margin-top: 2rem;
 }
 
-.project-bar {
-    margin-bottom: 2rem; /* Added more space between project entries */
+.profile-section .project-bar {
+  margin-bottom: 2rem; /* Added more space between project entries */
 }
 
-.project-info {
-    margin-bottom: 1rem; /* Increased spacing between project name and description */
+.profile-section .project-info {
+  margin-bottom: 1rem; /* Increased spacing between project name and description */
 }
 
-.project-name {
-    font-size: 1.5rem;
-    font-weight: bold;
+.profile-section .project-name {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.project-description {
-    font-size: 1rem;
-    color: #6b7280;
-    margin-bottom: 0.5rem; /* Consistent spacing below description */
+.profile-section .project-description {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem; /* Consistent spacing below description */
 }
 
 .progress-bar-container {
-    background: #e5e7eb;
-    border-radius: 0.5rem;
-    height: 25px; /* Slightly taller progress bars */
-    overflow: hidden;
+  background: #e5e7eb;
+  border-radius: 0.5rem;
+  height: 25px; /* Slightly taller progress bars */
+  overflow: hidden;
 }
 
 .progress-bar {
-    background: #22c55e;
-    height: 100%;
-    border-radius: 0.5rem;
-    position: relative;
+  background: #22c55e;
+  height: 100%;
+  border-radius: 0.5rem;
+  position: relative;
 }
 
 .progress-text {
-    position: absolute;
-    right: 10px;
-    color: white;
-    font-size: 0.9rem;
-    line-height: 25px; /* Centered text in progress bar */
+  position: absolute;
+  right: 10px;
+  color: white;
+  font-size: 0.9rem;
+  line-height: 25px; /* Centered text in progress bar */
 }

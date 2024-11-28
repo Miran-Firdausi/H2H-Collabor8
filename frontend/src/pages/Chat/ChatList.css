@@ -1,0 +1,82 @@
+.chat-list {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.chat-list__item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.chat-list__item:last-child {
+  border-bottom: none;
+}
+
+.chat-list__item:hover {
+  background-color: #f5f5f5;
+}
+
+.chat-list__item--selected {
+  background-color: #f0f0f0;
+  border-left: 4px solid #23b345;
+}
+
+.chat-list__name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.chat-list__last-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-list__content {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.chat-list__timestamp {
+  font-size: 12px;
+  color: #999;
+  margin-left: 8px;
+}
+
+/* Optional: Add scrollbar for long chat lists */
+.chat-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.chat-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.chat-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

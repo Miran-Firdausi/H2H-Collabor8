@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     "channels",
     "projects",
     "task_automation",
+    "chat",
     "rtc",
-    "users",
     "accounts",
 ]
 
@@ -81,6 +81,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "collabor8.wsgi.application"
 ASGI_APPLICATION = "collabor8.asgi.application"
 
+
+# added: Channel layers configuration (chat)
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -165,9 +168,9 @@ DJOSER = {
         "http://127.0.0.1:8000",
     ],
     "SERIALIZERS": {
-        "user_create": "accounts.serializers.UserCreateSerializer",
-        "user": "accounts.serializers.UserCreateSerializer",
-        "current_user": "accounts.serializers.UserCreateSerializer",
+        "user_create": "accounts.serializers.CustomUserCreateSerializer",
+        "user": "accounts.serializers.CustomUserCreateSerializer",
+        "current_user": "accounts.serializers.CustomUserCreateSerializer",
         "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
