@@ -292,7 +292,10 @@ select option {
   background-color: #eeeeee;
   color: #616161;
 }
-
+.descp{
+  width: 400px;
+  height: 200px;
+}
 .owner {
   font-size: 0.9rem;
   color: #666;

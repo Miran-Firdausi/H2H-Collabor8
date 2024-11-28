@@ -272,6 +272,7 @@ const ProjectsDashboard = () => {
               <div className="form-group">
                 <label>Description</label>
                 <textarea
+                  className="descp"
                   placeholder="Brief project description"
                   value={newProjectDescription}
                   onChange={(e) => setNewProjectDescription(e.target.value)}
