@@ -9,9 +9,9 @@ const GithubDashboard = () => {
   const [githubRepo, setGithubRepo] = useState("");
   const [githubIsSubmitted, setGithubIsSubmitted] = useState(false);
   const [githubActiveTab, setGithubActiveTab] = useState("activity");
-  const [activities, setActivities] = useState();
-  const [issues, setIssues] = useState();
-  const [pullRequests, setPullRequests] = useState();
+  const [activities, setActivities] = useState([]);
+  const [issues, setIssues] = useState([]);
+  const [pullRequests, setPullRequests] = useState([]);
   const [error, setError] = useState();
 
   const handleGithubSubmit = async (e) => {
@@ -83,6 +83,8 @@ const GithubDashboard = () => {
         </button>
       </form>
 
+      {error && <p className="github-error-text">{error}</p>}
+
       {githubIsSubmitted && githubUserName && githubRepo && (
         <div className="github-button-container github-show-buttons">
           <button
@@ -105,7 +107,6 @@ const GithubDashboard = () => {
           </button>
         </div>
       )}
-      {error && <p className="github-error-text">{error}</p>}
       {githubIsSubmitted &&
         githubUserName &&
         githubRepo &&
