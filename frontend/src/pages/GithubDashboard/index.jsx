@@ -32,8 +32,6 @@ const GithubDashboard = () => {
       setIssues(issues_response);
     } catch (err) {
       setError("Failed to fetch pull requests");
-    } finally {
-      setGithubLoading(false);
     }
 
     setGithubIsSubmitted(true);

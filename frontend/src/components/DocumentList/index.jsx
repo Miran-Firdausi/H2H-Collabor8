@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import "./DocumentList.css";
 
@@ -20,7 +21,7 @@ const DocumentList = () => {
 
   const createNewDocument = () => {
     const newDoc = {
-      id: documents.length + 1,
+      id: uuidv4(),
       title: `Untitled Document ${documents.length + 1}`,
       date: new Date().toISOString().split("T")[0], // Current date
     };
