@@ -150,6 +150,8 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
+DOMAIN = "localhost:5173"
+SITE_NAME = "Collabor8"
 # Djoser configuration
 DJOSER = {
     "LOGIN_FIELD": "email",
@@ -158,8 +160,8 @@ DJOSER = {
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "SEND_CONFIRMATION_EMAIL": True,
     "SET_PASSWORD_RETYPE": True,
-    "PASSWORD_RESET_CONFIRM_URL": f"{SITE_URL}/password/reset/confirm/{{uid}}/{{token}}",
-    "USERNAME_RESET_CONFIRM_URL": f"{SITE_URL}/email/reset/confirm/{{uid}}/{{token}}",
+    "PASSWORD_RESET_CONFIRM_URL": "/password/reset/confirm/{{uid}}/{{token}}",
+    "USERNAME_RESET_CONFIRM_URL": "/email/reset/confirm/{{uid}}/{{token}}",
     "ACTIVATION_URL": f"{SITE_URL}/activate/{{uid}}/{{token}}",
     "SEND_ACTIVATION_EMAIL": True,
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
