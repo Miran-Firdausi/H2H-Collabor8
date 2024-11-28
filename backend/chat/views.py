@@ -1,88 +1,197 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+import json
 from .models import Chat, Message
-from .serializers import ChatSerializer, MessageSerializer, UserSerializer
-from .ai_utils import get_ai_response
+from accounts.serializers import CustomUserCreateSerializer
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-class ChatViewSet(viewsets.ModelViewSet):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-    permission_classes = [
-        IsAuthenticated
-    ]  # Ensure only authenticated users can access chats
+@api_view(["GET"])
+def get_all_users(request):
+    users = User.objects.all()
+    users_data = [
+        {
+            "id": user.id,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }
+        for user in users
+    ]
+    return Response(users_data)
 
-    @action(detail=False, methods=["GET"])
-    def my_chats(self, request):
-        """
-        Get the list of chats for the authenticated user.
-        """
-        chats = Chat.objects.filter(participants=request.user)
-        serializer = self.get_serializer(chats, many=True)
-        return Response(serializer.data)
 
-    @action(detail=True, methods=["GET"])
-    def messages(self, request, pk=None):
-        """
-        Get the messages for a specific chat room.
-        """
-        chat = self.get_object()
-        messages = chat.messages.all().order_by("-timestamp")
-        serializer = MessageSerializer(messages, many=True)
-        return Response(serializer.data)
+def get_or_create_private_chat(user1, user2):
+    chat = (
+        Chat.objects.filter(
+            participants__in=[user1, user2],
+            is_group_chat=False,
+            is_ai_chat=False,
+        )
+        .annotate(participant_count=Count("participants"))
+        .filter(participant_count=2)
+        .first()
+    )
+    if not chat:
+        chat = Chat.objects.create(is_group_chat=False)
+        chat.participants.add(user1, user2)
+    return chat
 
-    @action(detail=False, methods=["POST"])
-    def create_or_get_ai_chat(self, request):
-        """
-        Create or get the AI chat with the authenticated user.
-        """
-        ai_user, _ = User.objects.get_or_create(username="AI Assistant")
 
-        # Try to find an AI chat for this user, or create one if it doesn't exist
-        chat = Chat.objects.filter(participants=request.user, is_ai_chat=True).first()
-        if not chat:
-            chat = Chat.objects.create(name="AI Chat", is_ai_chat=True)
-            chat.participants.add(request.user, ai_user)
+def get_or_create_ai_chat(user):
+    ai_user, _ = User.objects.get_or_create(email="ai@collabor8.com")
 
-        serializer = self.get_serializer(chat)
-        return Response(serializer.data)
+    chat = (
+        Chat.objects.filter(participants__in=[user, ai_user], is_ai_chat=True)
+        .annotate(participant_count=Count("participants"))
+        .filter(participant_count=2)
+        .first()
+    )
+    if not chat:
+        chat = Chat.objects.create(name="AI Chat", is_ai_chat=True)
+        chat.participants.add(user, ai_user)
+    return chat
 
-    @action(detail=True, methods=["POST"])
-    def send_message(self, request, pk=None):
-        """
-        Send a message to a specific chat room.
-        If the chat is an AI chat, the AI response will be generated and sent back.
-        """
-        chat = get_object_or_404(Chat, pk=pk)
-        content = request.data.get("content")
-        sender = request.user
 
-        # Validate message
-        if not content:
-            return Response({"error": "Message content cannot be empty"}, status=400)
+@api_view(["GET"])
+def my_chats(request):
+    chats = Chat.objects.filter(participants=request.user).prefetch_related(
+        "participants", "messages"
+    )
 
-        message = Message.objects.create(chat=chat, sender=sender, content=content)
+    chat_data = []
+    for chat in chats:
+        # Get the last message for the chat, if any
+        last_message = chat.messages.order_by("-timestamp").first()
 
-        # If this is an AI chat, generate and save the AI's response
-        if chat.is_ai_chat:
-            ai_response = get_ai_response(content)
-            ai_user = User.objects.get(username="AI Assistant")
-            Message.objects.create(
-                chat=chat, sender=ai_user, content=ai_response, is_ai_message=True
+        chat_info = {
+            "id": chat.id,
+            "name": chat.name,
+            "is_group_chat": chat.is_group_chat,
+            "is_ai_chat": chat.is_ai_chat,
+            "last_message": (
+                {
+                    "content": last_message.content,
+                    "timestamp": last_message.timestamp.isoformat(),
+                    "sender": (
+                        {
+                            "id": last_message.sender.id,
+                            "email": last_message.sender.email,
+                        }
+                        if last_message
+                        else None
+                    ),
+                }
+                if last_message
+                else {"content": "", "timestamp": "", "sender": None}
+            ),
+            "participants": [
+                {
+                    "id": participant.id,
+                    "email": participant.email,
+                    "name": f"{participant.first_name} {participant.last_name}".strip(),
+                }
+                for participant in chat.participants.all()
+            ],
+            "created_at": chat.created_at,
+        }
+        chat_data.append(chat_info)
+
+    return Response(chat_data)
+
+
+@api_view(["GET"])
+def chat_messages(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id, participants=request.user)
+    messages = chat.messages.all().order_by("timestamp")
+    message_data = [
+        {
+            "id": message.id,
+            "content": message.content,
+            "sender": {"id": message.sender.id, "email": message.sender.email},
+            "timestamp": message.timestamp,
+        }
+        for message in messages
+    ]
+    return Response(message_data)
+
+
+@api_view(["GET", "POST"])
+def create_or_get_ai_chat(request):
+    if request.method == "POST":
+        chat = get_or_create_ai_chat(request.user)
+        return Response(
+            {
+                "id": chat.id,
+                "is_ai_chat": chat.is_ai_chat,
+                "participants": [
+                    {"id": participant.id, "email": participant.email}
+                    for participant in chat.participants.all()
+                ],
+            }
+        )
+    return Response({"error": "Invalid HTTP method"}, status=405)
+
+
+@api_view(["POST"])
+@csrf_exempt
+def create_or_get_private_chat(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        other_user_id = data.get("user_id")
+        if not other_user_id:
+            return Response({"error": "Other user ID is required"}, status=400)
+
+        other_user = get_object_or_404(User, id=other_user_id)
+
+        chat = get_or_create_private_chat(request.user, other_user)
+
+        return Response(
+            {
+                "id": chat.id,
+                "name": chat.name,
+                "is_group_chat": chat.is_group_chat,
+                "participants": [
+                    {"id": participant.id, "email": participant.email}
+                    for participant in chat.participants.all()
+                ],
+            }
+        )
+    return Response({"error": "Invalid HTTP method"}, status=405)
+
+
+def create_group_chat(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        participant_ids = data.get("participant_ids", [])
+        name = data.get("name")
+
+        if len(participant_ids) < 2:
+            return Response(
+                {"error": "At least two participants are required"}, status=400
             )
 
-        serializer = MessageSerializer(message)
-        return Response(serializer.data)
+        participants = User.objects.filter(id__in=participant_ids)
+        if participants.count() != len(participant_ids):
+            return Response({"error": "Some participants are invalid"}, status=400)
 
+        chat = Chat.objects.create(name=name, is_group_chat=True)
+        chat.participants.add(*participants, request.user)
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A viewset for viewing user details.
-    """
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+        return Response(
+            {
+                "id": chat.id,
+                "name": chat.name,
+                "is_group_chat": chat.is_group_chat,
+                "participants": [
+                    {"id": participant.id, "email": participant.email}
+                    for participant in chat.participants.all()
+                ],
+            }
+        )
+    return Response({"error": "Invalid HTTP method"}, status=405)

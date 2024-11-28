@@ -1,34 +1,29 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from . import views
 
-# Create a router and register the viewsets
-router = DefaultRouter()
-router.register(r"chats", views.ChatViewSet, basename="chat")
-router.register(r"users", views.UserViewSet, basename="user")
-
 urlpatterns = [
-    # Include the router's automatically generated URLs
-    path("api/", include(router.urls)),
-    # Manually add the routes for custom actions
     path(
-        "api/chats/my_chats/",
-        views.ChatViewSet.as_view({"get": "my_chats"}),
-        name="my_chats",
+        "api/users/",
+        views.get_all_users,
+        name="all_users",
     ),
+    path("api/chats/my_chats/", views.my_chats, name="my_chats"),
     path(
-        "api/chats/<int:pk>/messages/",
-        views.ChatViewSet.as_view({"get": "messages"}),
-        name="chat_messages",
-    ),
-    path(
-        "api/chats/<int:pk>/send_message/",
-        views.ChatViewSet.as_view({"post": "send_message"}),
-        name="send_message",
+        "api/chats/<int:chat_id>/messages/", views.chat_messages, name="chat_messages"
     ),
     path(
         "api/chats/create_or_get_ai_chat/",
-        views.ChatViewSet.as_view({"post": "create_or_get_ai_chat"}),
+        views.create_or_get_ai_chat,
         name="create_or_get_ai_chat",
+    ),
+    path(
+        "api/chats/create_or_get_private_chat/",
+        views.create_or_get_private_chat,
+        name="create_or_get_private_chat",
+    ),
+    path(
+        "api/chats/create_group_chat/",
+        views.create_group_chat,
+        name="create_group_chat",
     ),
 ]

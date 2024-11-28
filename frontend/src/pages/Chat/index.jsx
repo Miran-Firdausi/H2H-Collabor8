@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import ChatList from "./ChatList";
 import ChatRoom from "./ChatRoom";
 import NewChatModal from "./NewChatModal";
 import "./Chat.css";
 
-const ChatPage = ({ userId }) => {
+const Chat = ({ userId }) => {
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [showNewChatModal, setShowNewChatModal] = useState(false);
@@ -17,9 +17,20 @@ const ChatPage = ({ userId }) => {
     fetchDefaultAIChat();
   }, []);
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `JWT ${localStorage.getItem("access")}`,
+      Accept: "application/json",
+    },
+  };
+
   const fetchChats = async () => {
     try {
-      const response = await axios.get("/api/chats/my_chats/");
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/chats/my_chats/",
+        config
+      );
       setChats(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching chats:", error);
@@ -30,7 +41,9 @@ const ChatPage = ({ userId }) => {
   const fetchDefaultAIChat = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/chats/create_or_get_ai_chat/"
+        "http://127.0.0.1:8000/api/chats/create_or_get_ai_chat/",
+        {},
+        config
       );
       if (response && response.data) {
         setChats((prevChats) => {
@@ -49,7 +62,7 @@ const ChatPage = ({ userId }) => {
     (chat) =>
       chat.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       chat.participants?.some((p) =>
-        p.username.toLowerCase().includes(searchTerm.toLowerCase())
+        p.email.toLowerCase().includes(searchTerm.toLowerCase())
       )
   );
 
@@ -61,13 +74,25 @@ const ChatPage = ({ userId }) => {
     try {
       let response;
       if (chatData.is_ai_chat) {
-        response = await axios.post("/api/chats/create_or_get_ai_chat/");
+        response = await axios.post(
+          "http://127.0.0.1:8000/api/chats/create_or_get_ai_chat/",
+          {},
+          config
+        );
       } else if (chatData.is_group_chat) {
-        response = await axios.post("/api/chats/", chatData);
+        response = await axios.post(
+          "http://127.0.0.1:8000/api/chats/",
+          chatData,
+          config
+        );
       } else {
-        response = await axios.post("/api/chats/create_or_get_private_chat/", {
-          user_id: chatData.participants[0],
-        });
+        response = await axios.post(
+          "http://127.0.0.1:8000/api/chats/create_or_get_private_chat/",
+          {
+            user_id: chatData.participants[0],
+          },
+          config
+        );
       }
 
       if (response && response.data) {
@@ -120,7 +145,7 @@ const ChatPage = ({ userId }) => {
           />
         ) : (
           <div className="no-chat-selected">
-            Select a chat and start messaging
+            Select a chat to start messaging
           </div>
         )}
       </div>
@@ -135,4 +160,4 @@ const ChatPage = ({ userId }) => {
   );
 };
 
-export default ChatPage;
+export default Chat;

@@ -1,28 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const NewChatModal = ({ onClose, onCreateChat, userId }) => {
-  const [chatType, setChatType] = useState('ai'); // Default to AI Chat
-  const [groupName, setGroupName] = useState('');
+  const [chatType, setChatType] = useState("ai"); // Default to AI Chat
+  const [groupName, setGroupName] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `JWT ${localStorage.getItem("access")}`,
+      Accept: "application/json",
+    },
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/users/');
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/users/",
+          config
+        );
         if (Array.isArray(response.data)) {
-          setAvailableUsers(response.data.filter(user => user.id !== userId));
+          setAvailableUsers(response.data.filter((user) => user.id !== userId));
         } else {
-          console.error('Unexpected response format:', response.data);
-          setError('Error fetching users: Unexpected data format');
+          console.error("Unexpected response format:", response.data);
+          setError("Error fetching users: Unexpected data format");
           setAvailableUsers([]);
         }
       } catch (error) {
-        console.error('Error fetching users:', error);
-        setError('Error fetching users. Please try again.');
+        console.error("Error fetching users:", error);
+        setError("Error fetching users. Please try again.");
         setAvailableUsers([]);
       }
     };
@@ -33,41 +44,48 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
     e.preventDefault();
     let chatData;
 
-    if (chatType === 'group') {
+    if (chatType === "group") {
       chatData = {
         is_group_chat: true,
         name: groupName,
-        participants: selectedUsers.map(user => user.id),
+        participants: selectedUsers.map((user) => user.id),
       };
-    } else if (chatType === 'individual') {
+    } else if (chatType === "individual") {
       chatData = {
         is_group_chat: false,
         participants: [selectedUsers[0]?.id],
       };
-    } else if (chatType === 'ai') {
+    } else if (chatType === "ai") {
       chatData = { is_ai_chat: true };
     }
     onCreateChat(chatData);
     onClose(); // Close modal after chat creation
   };
 
-  const filteredUsers = availableUsers.filter(user =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = availableUsers.filter((user) =>
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="modal" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="new-chat-modal" onClick={onClose}>
+      <div
+        className="new-chat-modal__content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2>Start New Chat</h2>
-        {error && <div className="error-message" role="alert">{error}</div>}
+        {error && (
+          <div className="error-message" role="alert">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="new-chat-types">
             <label>
               <input
                 type="radio"
                 value="ai"
-                checked={chatType === 'ai'}
-                onChange={() => setChatType('ai')}
+                checked={chatType === "ai"}
+                onChange={() => setChatType("ai")}
               />
               AI Chat
             </label>
@@ -75,8 +93,8 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
               <input
                 type="radio"
                 value="individual"
-                checked={chatType === 'individual'}
-                onChange={() => setChatType('individual')}
+                checked={chatType === "individual"}
+                onChange={() => setChatType("individual")}
               />
               Individual Chat
             </label>
@@ -84,13 +102,13 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
               <input
                 type="radio"
                 value="group"
-                checked={chatType === 'group'}
-                onChange={() => setChatType('group')}
+                checked={chatType === "group"}
+                onChange={() => setChatType("group")}
               />
               Group Chat
             </label>
           </div>
-          {chatType === 'group' && (
+          {chatType === "group" && (
             <input
               type="text"
               placeholder="Group Name"
@@ -99,7 +117,7 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
               required
             />
           )}
-          {chatType !== 'ai' && (
+          {chatType !== "ai" && (
             <>
               <input
                 type="text"
@@ -124,7 +142,7 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
                           }
                         }}
                       />
-                      {user.username}
+                      {user.email}
                     </label>
                   </div>
                 ))}
@@ -132,15 +150,16 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
             </>
           )}
           <button
+            className="btn-primary"
             type="submit"
             disabled={
-              (chatType !== 'ai' && selectedUsers.length === 0) ||
-              (chatType === 'group' && !groupName)
+              (chatType !== "ai" && selectedUsers.length === 0) ||
+              (chatType === "group" && !groupName)
             }
           >
             Create Chat
           </button>
-          <button type="button" onClick={onClose}>
+          <button type="button" onClick={onClose} className="btn-secondary">
             Cancel
           </button>
         </form>
