@@ -18,13 +18,9 @@ import "./AdminDashboard.css"
 
 const AdminDashboard = () => {
   // Moved all data to centralized objects/arrays for easier backend integration later
-  const [projectDetails] = useState({
-    name: "Clip Kadabra",
-    description: "A powerful video editing tool",
-    startDate: "2024-03-01",
-    endDate: "2024-06-30",
-    progress: 65,
-  });
+  
+  const queryParams = new URLSearchParams(location.search);
+  const projectName = queryParams.get("name");
 
   const [analyticsData] = useState({
     totalTasks: { value: 25, change: "+2 from last week" },
@@ -32,7 +28,13 @@ const AdminDashboard = () => {
     pendingTasks: { value: 8, change: "Need attention" },
     unassignedTasks: { value: 3, change: "Requires assignment" },
   });
-
+  const [projectDetails] = useState({
+    name: projectName,
+    description: "A powerful video editing tool",
+    startDate: "2024-03-01",
+    endDate: "2024-06-30",
+    progress: 65,
+  });
   const [taskStatusData] = useState([
     { name: "To Do", value: 8, color: "#e11d48" },
     { name: "In Progress", value: 5, color: "#f59e0b" },
@@ -184,24 +186,7 @@ const AdminDashboard = () => {
         <p>Welcome back, Admin</p>
       </div>
 
-      <div className="quick-actions">
-        <Link to="/todo" className="action-card">
-          <CheckSquare size={24} />
-          <span>Kanban</span>
-        </Link>
-        <Link to="/calendar" className="action-card">
-          <Calendar size={24} />
-          <span>Calendar</span>
-        </Link>
-        <Link to="/board" className="action-card">
-          <NotepadText size={24} />
-          <span>Task Board</span>
-        </Link>
-        <Link to="/CollabDoc" className="action-card">
-          <BookOpenText size={24} />
-          <span>CollabDoc</span>
-        </Link>
-      </div>
+      
 
       <div className="overview-events-team-grid">
         <div className="card project-overview">

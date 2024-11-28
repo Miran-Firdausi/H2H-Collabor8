@@ -27,7 +27,7 @@ function Project() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(tab || "tasks");
 
-  // Get project name from URL query parameter
+  
   const queryParams = new URLSearchParams(location.search);
   const projectName = queryParams.get("name");
   
@@ -41,11 +41,11 @@ function Project() {
   ];
 
   useEffect(() => {
-    // Update activeTab whenever the URL changes
+    
     if (tab && tabs.find((t) => t.name === tab.toLowerCase())) {
       setActiveTab(tab.toLowerCase());
     } else if (!tab) {
-      // Default to "tasks" if no tab is provided, maintain project name in URL
+     
       navigate(`/project/tasks?name=${encodeURIComponent(projectName)}`);
     }
   }, [tab, navigate, projectName, tabs]);
@@ -53,7 +53,7 @@ function Project() {
   const handleTabChange = (tabName) => {
     const newTab = tabName.toLowerCase();
     setActiveTab(newTab);
-    // Maintain project name when changing tabs
+    
     navigate(`/project/${newTab}?name=${encodeURIComponent(projectName)}`);
   };
 
