@@ -179,25 +179,14 @@ const ProjectsDashboard = () => {
                       <Folder className="icon-blue" size={20} />
                       <h2>{project.name}</h2>
                     </div>
-                    <div className="project-date">
+                    <div className="project-detail">
                       <span>Created on: {formattedDate}</span>
-                      {project.owner_name && (
-                        <span className="owner">
-                          Owner: {project.owner_name}
-                        </span>
-                      )}
-                      <button
-                        className="btn btn-outline btn-dashboard"
-                        onClick={() =>
-                          (window.location.href = `/AdminDashboard?project=${
-                            project.id
-                          }&name=${encodeURIComponent(project.name)}`)
-                        }
-                      >
-                        <ArrowRight size={16} />
-                        Dashboard
-                      </button>
                     </div>
+                    {project.owner_name && (
+                      <div className="project-detail">
+                        Owner: {project.owner_name}
+                      </div>
+                    )}
                   </div>
                   <div className="project-card-content">
                     <p className="project-description">{project.description}</p>
@@ -270,6 +259,17 @@ const ProjectsDashboard = () => {
                       >
                         <File size={16} />
                         Files
+                      </button>
+                      <button
+                        className="btn btn-outline"
+                        onClick={() =>
+                          (window.location.href = `/AdminDashboard?project=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
+                        }
+                      >
+                        <ArrowRight size={16} />
+                        Dashboard
                       </button>
                       <button
                         className="btn btn-danger"

@@ -50,6 +50,7 @@
 
 .project-card-header {
   padding: 1.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -69,12 +70,9 @@
   color: #22c55e;
 }
 
-.project-date {
+.project-detail {
   font-size: 0.875rem;
   color: #6b7280;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .project-card-content {
@@ -100,8 +98,7 @@
 }
 
 /* Buttons */
-.project-actions .btn,
-.btn-dashboard {
+.project-actions .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -187,6 +184,13 @@
   color: #24292f;
   font-weight: 600;
   font-size: 14px;
+}
+
+.status-select {
+  padding: 10px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  width: 100%;
 }
 
 .project-dialog-form-group input,
