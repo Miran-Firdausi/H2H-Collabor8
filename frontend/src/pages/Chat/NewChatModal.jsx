@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getConfig } from "../../utils/httpConfig";
 
 const NewChatModal = ({ onClose, onCreateChat, userId }) => {
   const [chatType, setChatType] = useState("ai"); // Default to AI Chat
@@ -9,20 +10,12 @@ const NewChatModal = ({ onClose, onCreateChat, userId }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `JWT ${localStorage.getItem("access")}`,
-      Accept: "application/json",
-    },
-  };
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
           "http://127.0.0.1:8000/api/users/",
-          config
+          getConfig()
         );
         if (Array.isArray(response.data)) {
           setAvailableUsers(response.data.filter((user) => user.id !== userId));

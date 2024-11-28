@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
-import { load_user } from "../../actions/auth";
+import { getConfig } from "../../utils/httpConfig";
 import "./ChatRoom.css";
 
 const ChatRoom = ({ user, chatId, isAiChat }) => {
@@ -11,27 +10,11 @@ const ChatRoom = ({ user, chatId, isAiChat }) => {
   const messagesEndRef = useRef(null);
   const [socket, setSocket] = useState();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!user) {
-      dispatch(load_user());
-    }
-  }, [dispatch, user]);
-
   const fetchMessages = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access")}`,
-        Accept: "application/json",
-      },
-    };
-
     try {
       const response = await axios.get(
         `http://127.0.0.1:8000/api/chats/${chatId}/messages/`,
-        config
+        getConfig()
       );
       setMessages(response.data);
     } catch (error) {

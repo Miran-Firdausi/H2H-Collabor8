@@ -1,17 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { load_user } from "../../actions/auth";
+import { useSelector } from "react-redux";
 import "./ChatList.css";
 
 const ChatList = ({ chats, onSelectChat, selectedChatId }) => {
   const currentUser = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!currentUser) {
-      dispatch(load_user());
-    }
-  }, [dispatch, currentUser]);
 
   const formatRelativeTime = (timestamp) => {
     const date = new Date(timestamp);

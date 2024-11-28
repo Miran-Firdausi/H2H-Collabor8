@@ -1,21 +1,12 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { connect } from "react-redux"; // Import connect to connect Redux state
-import { logout } from "../../actions/auth"; // Import logout action
-import { load_user } from "../../actions/auth";
+import { connect } from "react-redux";
+import { logout } from "../../actions/auth";
 import "./profilepage.css";
 
 const ProfilePage = ({ isAuthenticated, logout, user }) => {
   // Access user from props
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isAuthenticated && !user) {
-      dispatch(load_user());
-    }
-  }, [dispatch, isAuthenticated, user]);
 
   // Function to navigate to the reset password page
   const handleChangePasswordClick = () => {
@@ -56,7 +47,7 @@ const ProfilePage = ({ isAuthenticated, logout, user }) => {
   ];
 
   if (!user) {
-    return <div>Loading your profile...</div>;
+    return <div className="loading-container">Loading your profile...</div>;
   }
 
   return (

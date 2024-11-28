@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import ChatList from "./ChatList";
 import ChatRoom from "./ChatRoom";
 import NewChatModal from "./NewChatModal";
+import { getConfig } from "../../utils/httpConfig";
 import "./Chat.css";
 
 const Chat = ({ userId }) => {
@@ -10,20 +12,13 @@ const Chat = ({ userId }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [showNewChatModal, setShowNewChatModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState(null);
+
+  const config = getConfig();
 
   useEffect(() => {
     fetchChats();
     fetchDefaultAIChat();
   }, []);
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `JWT ${localStorage.getItem("access")}`,
-      Accept: "application/json",
-    },
-  };
 
   const fetchChats = async () => {
     try {
@@ -33,8 +28,8 @@ const Chat = ({ userId }) => {
       );
       setChats(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error("Error fetching chats:", error);
-      setError("Failed to load chats.");
+      console.error(error);
+      toast.error("Failed to load chats.", { position: "top-right" });
     }
   };
 
@@ -105,13 +100,12 @@ const Chat = ({ userId }) => {
       setShowNewChatModal(false);
     } catch (error) {
       console.error("Error creating new chat:", error);
-      setError("Failed to create new chat.");
+      toast.error("Failed to create new chat.", { position: "top-right" });
     }
   };
 
   return (
     <div className="chat-container">
-      {error && <div className="error-message">{error}</div>}
       <div className="chat-sidebar">
         <div className="chat-header">
           <h2>Chats</h2>
@@ -156,6 +150,7 @@ const Chat = ({ userId }) => {
           userId={userId}
         />
       )}
+      <ToastContainer />
     </div>
   );
 };

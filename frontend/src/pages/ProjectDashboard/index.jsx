@@ -10,12 +10,12 @@ import {
   File,
   Trash,
   AlertCircle,
-  Share
-} 
-from "lucide-react";
+} from "lucide-react";
 import axios from "axios";
-import { toast } from 'react-hot-toast';
-import './ProjectDashboard.css'
+import { toast } from "react-hot-toast";
+import { getConfig } from "../../utils/httpConfig";
+import "./ProjectDashboard.css";
+
 const ProjectsDashboard = () => {
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
@@ -27,27 +27,22 @@ const ProjectsDashboard = () => {
   const availableStatus = ["active", "completed", "archived"];
   const [status, setStatus] = useState(availableStatus[0]);
 
- 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `JWT ${localStorage.getItem("access")}`,
-      Accept: "application/json",
-    },
-  };
-
+  const config = getConfig();
 
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://127.0.0.1:8000/projects/", config);
+      const response = await axios.get(
+        "http://127.0.0.1:8000/projects/",
+        config
+      );
       setProjects(response.data);
       setError(null);
     } catch (error) {
       setError("Failed to load projects. Please try again.");
       if (error.response?.status === 401) {
         // Handle unauthorized access
-        window.location.href = '/login';
+        window.location.href = "/login";
       }
     } finally {
       setLoading(false);
@@ -65,11 +60,14 @@ const ProjectsDashboard = () => {
     }
 
     try {
-      await axios.delete(`http://127.0.0.1:8000/projects/${projectId}/`, config);
+      await axios.delete(
+        `http://127.0.0.1:8000/projects/${projectId}/`,
+        config
+      );
       setProjects(projects.filter((project) => project.id !== projectId));
-      toast.success('Project deleted successfully');
+      toast.success("Project deleted successfully");
     } catch (error) {
-      toast.error('Failed to delete project');
+      toast.error("Failed to delete project");
       console.error("Error deleting project:", error);
     }
   };
@@ -77,7 +75,7 @@ const ProjectsDashboard = () => {
   // Create project
   const handleCreateProject = async () => {
     if (!newProjectName.trim()) {
-      toast.error('Please enter a project name');
+      toast.error("Please enter a project name");
       return;
     }
 
@@ -88,14 +86,18 @@ const ProjectsDashboard = () => {
         status: status,
       };
 
-      const response = await axios.post("http://127.0.0.1:8000/projects/", newProject, config);
+      const response = await axios.post(
+        "http://127.0.0.1:8000/projects/",
+        newProject,
+        config
+      );
       setProjects([...projects, response.data]);
       setShowNewProjectDialog(false);
       setNewProjectName("");
       setNewProjectDescription("");
-      toast.success('Project created successfully');
+      toast.success("Project created successfully");
     } catch (error) {
-      toast.error('Failed to create project');
+      toast.error("Failed to create project");
       console.error("Error creating project:", error);
     }
   };
@@ -108,19 +110,21 @@ const ProjectsDashboard = () => {
         { status: newStatus },
         config
       );
-      
-      setProjects(projects.map((project) =>
-        project.id === projectId ? { ...project, status: newStatus } : project
-      ));
-      toast.success('Status updated successfully');
+
+      setProjects(
+        projects.map((project) =>
+          project.id === projectId ? { ...project, status: newStatus } : project
+        )
+      );
+      toast.success("Status updated successfully");
     } catch (error) {
-      toast.error('Failed to update status');
+      toast.error("Failed to update status");
       console.error("Error updating status:", error);
     }
   };
 
   if (loading) {
-    return <div className="loading">Loading projects...</div>;
+    return <div className="loading-container">Loading projects...</div>;
   }
 
   if (error) {
@@ -162,12 +166,12 @@ const ProjectsDashboard = () => {
           <div className="projects-grid">
             {projects.map((project) => {
               const createdAt = new Date(project.created_at);
-              const formattedDate = createdAt.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
+              const formattedDate = createdAt.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
               });
-              
+
               return (
                 <div key={project.id} className="project-card">
                   <div className="project-card-header">
@@ -178,11 +182,17 @@ const ProjectsDashboard = () => {
                     <div className="project-date">
                       <span>Created on: {formattedDate}</span>
                       {project.owner_name && (
-                        <span className="owner">Owner: {project.owner_name}</span>
+                        <span className="owner">
+                          Owner: {project.owner_name}
+                        </span>
                       )}
                       <button
                         className="btn btn-outline btn-dashboard"
-                        onClick={() => window.location.href = `/AdminDashboard?project=${project.id}&name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/AdminDashboard?project=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
+                        }
                       >
                         <ArrowRight size={16} />
                         Dashboard
@@ -193,47 +203,70 @@ const ProjectsDashboard = () => {
                     <p className="project-description">{project.description}</p>
                     <select
                       value={project.status}
-                      onChange={(e) => handleStatusChange(project.id, e.target.value)}
+                      onChange={(e) =>
+                        handleStatusChange(project.id, e.target.value)
+                      }
                       className={`status-select status-${project.status}`}
                     >
                       {availableStatus.map((statusOption) => (
                         <option key={statusOption} value={statusOption}>
-                          {statusOption.charAt(0).toUpperCase() + statusOption.slice(1)}
+                          {statusOption.charAt(0).toUpperCase() +
+                            statusOption.slice(1)}
                         </option>
                       ))}
                     </select>
                     <div className="project-actions">
                       <button
                         className="btn btn-outline"
-                        onClick={() => window.location.href = `/project/tasks?name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/project/tasks?name=${encodeURIComponent(
+                            project.name
+                          )}`)
+                        }
                       >
                         <CheckSquare size={16} />
                         Tasks
                       </button>
                       <button
                         className="btn btn-outline"
-                        onClick={() => window.location.href = `/project/board?name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/project/board?name=${encodeURIComponent(
+                            project.name
+                          )}`)
+                        }
                       >
                         <Layout size={16} />
                         Board
                       </button>
                       <button
                         className="btn btn-outline"
-                        onClick={() => window.location.href = `/project/github?name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/project/github?name=${encodeURIComponent(
+                            project.name
+                          )}`)
+                        }
                       >
                         <Github size={16} />
                         GitHub
                       </button>
                       <button
                         className="btn btn-outline"
-                        onClick={() => window.location.href = `/project/calendar?name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/project/calendar?name=${encodeURIComponent(
+                            project.name
+                          )}`)
+                        }
                       >
                         <Calendar size={16} />
                         Calendar
                       </button>
                       <button
                         className="btn btn-outline"
-                        onClick={() => window.location.href = `/project/files?name=${encodeURIComponent(project.name)}`}
+                        onClick={() =>
+                          (window.location.href = `/project/files?name=${encodeURIComponent(
+                            project.name
+                          )}`)
+                        }
                       >
                         <File size={16} />
                         Files
@@ -288,7 +321,8 @@ const ProjectsDashboard = () => {
                 >
                   {availableStatus.map((statusOption) => (
                     <option key={statusOption} value={statusOption}>
-                      {statusOption.charAt(0).toUpperCase() + statusOption.slice(1)}
+                      {statusOption.charAt(0).toUpperCase() +
+                        statusOption.slice(1)}
                     </option>
                   ))}
                 </select>
@@ -301,7 +335,7 @@ const ProjectsDashboard = () => {
               >
                 Cancel
               </button>
-              <button 
+              <button
                 className="btn btn-primary"
                 onClick={handleCreateProject}
                 disabled={!newProjectName.trim()}

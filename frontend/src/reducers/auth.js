@@ -21,8 +21,8 @@ import {
 const initialState = {
   access: localStorage.getItem("access"),
   refresh: localStorage.getItem("refresh"),
-  isAuthenticated: localStorage.getItem("access") ? true : false,
-  user: localStorage.getItem("user-info"),
+  isAuthenticated: false,
+  user: null,
 };
 
 export default function (state = initialState, action) {
