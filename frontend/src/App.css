@@ -1,5 +1,6 @@
 .btn-primary {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 6px;
   background-color: #23b345;

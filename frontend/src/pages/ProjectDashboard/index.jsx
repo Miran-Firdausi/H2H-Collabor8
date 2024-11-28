@@ -9,6 +9,7 @@ import {
   Folder,
   File,
   Trash,
+  Share,
 } from "lucide-react";
 import axios from "axios";
 

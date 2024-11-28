@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { MessageCircleMore, Layout, Bell, Calendar, User } from "lucide-react";
+import { MessageCircleMore, Layout, Bell, User, Users } from "lucide-react";
 import "./Navbar.css";
 
 function Navbar() {
@@ -26,6 +26,10 @@ function Navbar() {
             <Link to="/notifications" className="nav-link">
               <Bell size={20} />
               <span>Notifications</span>
+            </Link>
+            <Link to="/share" className="nav-link">
+                <Users size={20} />
+                <span>Discussions</span>
             </Link>
             <Link to="/profile" className="nav-link">
               <User size={20} />

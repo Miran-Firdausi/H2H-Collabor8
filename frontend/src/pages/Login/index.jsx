@@ -26,7 +26,7 @@ const Login = ({ login, isAuthenticated }) => {
     try {
       await login(email, password);
     } catch (err) {
-      setError("Username or password is incorrect"); // Set error message
+      setError("email or password is incorrect"); // Set error message
     }
   };
 
