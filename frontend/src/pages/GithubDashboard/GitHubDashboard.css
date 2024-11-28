@@ -17,11 +17,11 @@
   margin-bottom: 20px;
 }
 
-.form-group {
+.github-form-group {
   margin-bottom: 10px;
 }
 
-input {
+.github-input {
   padding: 10px;
   width: 100%;
   max-width: 300px;
@@ -30,7 +30,7 @@ input {
   border: 1px solid #ddd;
 }
 
-button {
+.github-button {
   padding: 10px 20px;
   background-color: #23b345; 
   color: white;
@@ -40,11 +40,11 @@ button {
   margin-top: 10px;
 }
 
-button:hover {
+.github-button:hover {
   background-color: #1a9c38;
 }
 
-.button-container {
+.github-button-container {
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -53,11 +53,11 @@ button:hover {
   display: none; 
 }
 
-.button-container.show-buttons {
+.github-button-container.github-show-buttons {
   display: flex; 
 }
 
-.tab-button {
+.github-tab-button {
   padding: 10px 20px;
   background-color: #23b345;
   color: white;
@@ -66,47 +66,47 @@ button:hover {
   border-radius: 25px;
 }
 
-.tab-button:hover {
+.github-tab-button:hover {
   background-color: #1a9c38;
 }
 
-.content-container {
+.github-content-container {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
 }
 
-.loading-text {
+.github-loading-text {
   text-align: center;
   color: gray;
 }
 
-.error-text {
+.github-error-text {
   color: red;
   text-align: center;
 }
 
-.placeholder-text {
+.github-placeholder-text {
   text-align: center;
   color: gray;
 }
 
-.activity-container,
-.pr-container,
-.issue-container {
+.github-activity-container,
+.github-pr-container,
+.github-issue-container {
   margin-top: 20px;
 }
 
-.activity-list,
-.pr-list,
-.issue-list {
+.github-activity-list,
+.github-pr-list,
+.github-issue-list {
   list-style: none;
   padding-left: 0;
 }
 
-.activity-box,
-.pr-box,
-.issue-box {
+.github-activity-box,
+.github-pr-box,
+.github-issue-box {
   padding: 15px;
   background-color: #f9f9f9;
   margin: 10px 0;
@@ -114,33 +114,33 @@ button:hover {
   border: 1px solid #ddd;
 }
 
-.activity-title,
-.pr-title,
-.issue-title {
+.github-activity-title,
+.github-pr-title,
+.github-issue-title {
   font-size: 1.1em;
   font-weight: bold;
   color: #333;
 }
 
-.activity-description,
-.pr-description,
-.issue-description {
+.github-activity-description,
+.github-pr-description,
+.github-issue-description {
   margin: 10px 0;
   font-size: 0.95em;
   color: #555;
 }
 
-.activity-time,
-.pr-time,
-.issue-time {
+.github-activity-time,
+.github-pr-time,
+.github-issue-time {
   font-size: 0.85em;
   color: gray;
   text-align: right;
 }
 
-.activity-box:hover,
-.pr-box:hover,
-.issue-box:hover {
+.github-activity-box:hover,
+.github-pr-box:hover,
+.github-issue-box:hover {
   background-color: #f1f1f1;
   cursor: pointer;
 }

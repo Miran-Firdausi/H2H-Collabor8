@@ -3,32 +3,32 @@ import axios from 'axios';
 import './GithubDashboard.css';
 
 const GithubActivityTracker = ({ userName, repo }) => {
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [githubActivities, setGithubActivities] = useState([]);
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [githubError, setGithubError] = useState('');
 
   useEffect(() => {
-    const fetchActivities = async () => {
-      setLoading(true);
-      setError('');
+    const fetchGithubActivities = async () => {
+      setGithubLoading(true);
+      setGithubError('');
       try {
         const response = await axios.get(
           `https://api.github.com/repos/${userName}/${repo}/events`
         );
-        setActivities(response.data);
+        setGithubActivities(response.data);
       } catch (err) {
-        setError('Failed to fetch GitHub activities');
+        setGithubError('Failed to fetch GitHub activities');
       } finally {
-        setLoading(false);
+        setGithubLoading(false);
       }
     };
 
     if (userName && repo) {
-      fetchActivities();
+      fetchGithubActivities();
     }
   }, [userName, repo]);
 
-  const getActivityDescription = (activity) => {
+  const getGithubActivityDescription = (activity) => {
     switch (activity.type) {
       case 'PushEvent':
         return activity.payload.commits.length
@@ -48,16 +48,16 @@ const GithubActivityTracker = ({ userName, repo }) => {
   };
 
   return (
-    <div className="activity-container">
-      {loading && <p className="loading-text">Loading activities...</p>}
-      {error && <p className="error-text">{error}</p>}
-      {!loading && activities.length > 0 ? (
-        <div className="activity-list">
-          {activities.map((activity) => (
-            <div key={activity.id} className="activity-box">
-              <h4 className="activity-title">{activity.actor.login} - {activity.type}</h4>
-              <p className="activity-description">{getActivityDescription(activity)}</p>
-              <span className="activity-time">
+    <div className="github-activity-container">
+      {githubLoading && <p className="github-loading-text">Loading activities...</p>}
+      {githubError && <p className="github-error-text">{githubError}</p>}
+      {!githubLoading && githubActivities.length > 0 ? (
+        <div className="github-activity-list">
+          {githubActivities.map((activity) => (
+            <div key={activity.id} className="github-activity-box">
+              <h4 className="github-activity-title">{activity.actor.login} - {activity.type}</h4>
+              <p className="github-activity-description">{getGithubActivityDescription(activity)}</p>
+              <span className="github-activity-time">
                 {new Date(activity.created_at).toLocaleString()}
               </span>
             </div>

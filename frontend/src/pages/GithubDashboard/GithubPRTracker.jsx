@@ -3,42 +3,42 @@ import axios from 'axios';
 import './GithubDashboard.css';
 
 const GithubPRTracker = ({ userName, repo }) => {
-  const [pullRequests, setPullRequests] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [githubPullRequests, setGithubPullRequests] = useState([]);
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [githubError, setGithubError] = useState('');
 
   useEffect(() => {
-    const fetchPullRequests = async () => {
-      setLoading(true);
-      setError('');
+    const fetchGithubPullRequests = async () => {
+      setGithubLoading(true);
+      setGithubError('');
       try {
         const response = await axios.get(
           `https://api.github.com/repos/${userName}/${repo}/pulls`
         );
-        setPullRequests(response.data);
+        setGithubPullRequests(response.data);
       } catch (err) {
-        setError('Failed to fetch pull requests');
+        setGithubError('Failed to fetch pull requests');
       } finally {
-        setLoading(false);
+        setGithubLoading(false);
       }
     };
 
     if (userName && repo) {
-      fetchPullRequests();
+      fetchGithubPullRequests();
     }
   }, [userName, repo]);
 
   return (
-    <div className="pr-container">
-      {loading && <p className="loading-text">Loading pull requests...</p>}
-      {error && <p className="error-text">{error}</p>}
-      {!loading && pullRequests.length > 0 ? (
-        <div className="pr-list">
-          {pullRequests.map((pr) => (
-            <div key={pr.id} className="pr-box">
-              <h4 className="pr-title">{pr.title}</h4>
-              <p className="pr-description">{pr.user.login} opened a pull request.</p>
-              <span className="pr-time">
+    <div className="github-pr-container">
+      {githubLoading && <p className="github-loading-text">Loading pull requests...</p>}
+      {githubError && <p className="github-error-text">{githubError}</p>}
+      {!githubLoading && githubPullRequests.length > 0 ? (
+        <div className="github-pr-list">
+          {githubPullRequests.map((pr) => (
+            <div key={pr.id} className="github-pr-box">
+              <h4 className="github-pr-title">{pr.title}</h4>
+              <p className="github-pr-description">{pr.user.login} opened a pull request.</p>
+              <span className="github-pr-time">
                 {new Date(pr.created_at).toLocaleString()}
               </span>
             </div>

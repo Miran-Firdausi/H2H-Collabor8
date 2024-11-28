@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project
+from .models import Project, Discussion
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner_email = serializers.EmailField(source='owner.email', read_only=True)

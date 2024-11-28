@@ -2,41 +2,41 @@ import React, { useState } from 'react';
 import './GithubDashboard.css';
 
 const GithubForm = ({ onSubmit }) => {
-  const [userName, setUserName] = useState('');
-  const [repo, setRepo] = useState('');
+  const [githubUserName, setGithubUserName] = useState('');
+  const [githubRepo, setGithubRepo] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleGithubSubmit = (e) => {
     e.preventDefault();
-    if (userName && repo) {
-      onSubmit(userName, repo);
+    if (githubUserName && githubRepo) {
+      onSubmit(githubUserName, githubRepo);
     }
   };
 
   return (
-    <form className="github-form" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="username">GitHub Username:</label>
+    <form className="github-form" onSubmit={handleGithubSubmit}>
+      <div className="github-form-group">
+        <label htmlFor="github-username">GitHub Username:</label>
         <input
-          id="username"
+          id="github-username"
           type="text"
           placeholder="Enter GitHub username"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
+          value={githubUserName}
+          onChange={(e) => setGithubUserName(e.target.value)}
           required
         />
       </div>
-      <div className="form-group">
-        <label htmlFor="repo">Repository Name:</label>
+      <div className="github-form-group">
+        <label htmlFor="github-repo">Repository Name:</label>
         <input
-          id="repo"
+          id="github-repo"
           type="text"
           placeholder="Enter repository name"
-          value={repo}
-          onChange={(e) => setRepo(e.target.value)}
+          value={githubRepo}
+          onChange={(e) => setGithubRepo(e.target.value)}
           required
         />
       </div>
-      <button type="submit" className="button">
+      <button type="submit" className="github-button">
         Submit
       </button>
     </form>

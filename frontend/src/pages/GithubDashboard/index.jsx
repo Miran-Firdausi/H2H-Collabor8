@@ -5,83 +5,81 @@ import GithubIssueTracker from "./GithubIssueTracker";
 import "./GithubDashboard.css";
 
 const GithubDashboard = () => {
-  const [userName, setUserName] = useState("");
-  const [repo, setRepo] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [activeTab, setActiveTab] = useState("activity");
+  const [githubUserName, setGithubUserName] = useState("");
+  const [githubRepo, setGithubRepo] = useState("");
+  const [githubIsSubmitted, setGithubIsSubmitted] = useState(false);
+  const [githubActiveTab, setGithubActiveTab] = useState("activity");
 
-  const handleSubmit = (e) => {
+  const handleGithubSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setGithubIsSubmitted(true);
   };
 
-  const renderTabContent = () => {
-    switch (activeTab) {
+  const renderGithubTabContent = () => {
+    switch (githubActiveTab) {
       case "activity":
-        return <GithubActivityTracker userName={userName} repo={repo} />;
+        return <GithubActivityTracker userName={githubUserName} repo={githubRepo} />;
       case "pr":
-        return <GithubPRTracker userName={userName} repo={repo} />;
+        return <GithubPRTracker userName={githubUserName} repo={githubRepo} />;
       case "issues":
-        return <GithubIssueTracker userName={userName} repo={repo} />;
+        return <GithubIssueTracker userName={githubUserName} repo={githubRepo} />;
       default:
-        return <GithubActivityTracker userName={userName} repo={repo} />;
+        return <GithubActivityTracker userName={githubUserName} repo={githubRepo} />;
     }
   };
 
   return (
     <div className="github-container">
       <h2 className="github-header">GitHub Dashboard</h2>
-      <form className="github-form" onSubmit={handleSubmit}>
+      <form className="github-form" onSubmit={handleGithubSubmit}>
         <div className="form-group">
-          <label htmlFor="username">GitHub Username:</label>
+          <label htmlFor="github-username">GitHub Username:</label>
           <input
-            id="username"
+            id="github-username"
             type="text"
             placeholder="Enter GitHub username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            value={githubUserName}
+            onChange={(e) => setGithubUserName(e.target.value)}
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="repo">Repository Name:</label>
+          <label htmlFor="github-repo">Repository Name:</label>
           <input
-            id="repo"
+            id="github-repo"
             type="text"
             placeholder="Enter repository name"
-            value={repo}
-            onChange={(e) => setRepo(e.target.value)}
+            value={githubRepo}
+            onChange={(e) => setGithubRepo(e.target.value)}
             required
           />
         </div>
-        <button type="submit" className="button">
+        <button type="submit" className="github-button">
           Show Activity
         </button>
       </form>
 
-      {isSubmitted && userName && repo && (
-        <div className="button-container show-buttons">
+      {githubIsSubmitted && githubUserName && githubRepo && (
+        <div className="github-button-container github-show-buttons">
           <button
-            onClick={() => setActiveTab("activity")}
-            className="tab-button"
+            onClick={() => setGithubActiveTab("activity")}
+            className="github-tab-button"
           >
             Activity
           </button>
-          <button onClick={() => setActiveTab("pr")} className="tab-button">
+          <button onClick={() => setGithubActiveTab("pr")} className="github-tab-button">
             Pull Requests
           </button>
           <button
-            onClick={() => setActiveTab("issues")}
-            className="tab-button"
+            onClick={() => setGithubActiveTab("issues")}
+            className="github-tab-button"
           >
             Issues
           </button>
         </div>
       )}
 
-      {isSubmitted && userName && repo && (
-        <div className="content-container">{renderTabContent()}</div>
-      )}
+      {githubIsSubmitted && githubUserName && githubRepo && renderGithubTabContent()}
     </div>
   );
 };

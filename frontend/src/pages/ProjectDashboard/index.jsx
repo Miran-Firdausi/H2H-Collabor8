@@ -9,9 +9,10 @@ import {
   Folder,
   File,
   Trash,
-  AlertCircle
-  Share,
-} from "lucide-react";
+  AlertCircle,
+  Share
+} 
+from "lucide-react";
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import './ProjectDashboard.css'
