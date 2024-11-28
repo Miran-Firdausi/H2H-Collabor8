@@ -256,3 +256,48 @@ select option {
   color: #374151;
   background-color: white;
 }
+.loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-container {
+  text-align: center;
+  padding: 2rem;
+  color: red;
+}
+
+.no-projects {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.status-select {
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.status-active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-archived {
+  background-color: #eeeeee;
+  color: #616161;
+}
+.descp{
+  width: 400px;
+  height: 200px;
+}
+.owner {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 1rem;
+}
