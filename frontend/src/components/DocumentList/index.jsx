@@ -5,12 +5,12 @@ import "./DocumentList.css";
 const DocumentList = () => {
   const [documents, setDocuments] = useState([
     {
-      id: 1,
+      id: "174d01d5-e0ab-4110-ab40-e0aa5f12dbc1",
       title: "Project Proposal",
       date: "2024-11-10",
     },
     {
-      id: 2,
+      id: "e0bc0f22-80a7-49bb-a9c7-eb9fd07579e7",
       title: "Design Specification",
       date: "2024-11-15",
     },

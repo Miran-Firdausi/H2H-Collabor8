@@ -25,8 +25,7 @@ const PrivateRoute = ({ element: Component }) => {
   }, [dispatch]);
 
   if (isLoading) {
-    // Optional: Add a loading spinner or placeholder
-    return <div>Loading...</div>;
+    return <div className="loading-container">Loading Please wait...</div>;
   }
 
   if (!isAuthenticated && !isLoading) {
