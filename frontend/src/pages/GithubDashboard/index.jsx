@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GithubActivityTracker from "./GithubActivityTracker";
 import GithubPRTracker from "./GithubPRTracker";
 import GithubIssueTracker from "./GithubIssueTracker";
+import axios from "axios";
 import "./GithubDashboard.css";
 
 const GithubDashboard = () => {
@@ -19,19 +20,21 @@ const GithubDashboard = () => {
 
     try {
       const pr_response = await axios.get(
-        `https://api.github.com/repos/${userName}/${repo}/pulls`
+        `https://api.github.com/repos/${githubUserName}/${githubRepo}/pulls`
       );
       const issues_response = await axios.get(
-        `https://api.github.com/repos/${userName}/${repo}/issues`
+        `https://api.github.com/repos/${githubUserName}/${githubRepo}/issues`
       );
       const activities_response = await axios.get(
-        `https://api.github.com/repos/${userName}/${repo}/events`
+        `https://api.github.com/repos/${githubUserName}/${githubRepo}/events`
       );
       setActivities(activities_response.data);
       setPullRequests(pr_response.data);
       setIssues(issues_response);
+      setError(null);
     } catch (err) {
-      setError("Failed to fetch pull requests");
+      setError("Failed to fetch from GitHub");
+      console.log(err);
     }
 
     setGithubIsSubmitted(true);
