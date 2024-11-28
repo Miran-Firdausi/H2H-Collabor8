@@ -561,3 +561,20 @@
 .testimonials-grid {
   animation: fadeIn 0.6s ease-out;
 }
+
+.already-user-text {
+  color: #394b3c; /* Match the color with the rest of the hero section text */
+  padding-top: 1rem; /* Add padding to create space */
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.already-user-text a {
+  color: #22c55e; /* Make the link stand out with a color */
+  text-decoration: none;
+}
+
+.already-user-text a:hover {
+  color: #1f9a4d; /* Change color on hover for better interaction */
+}

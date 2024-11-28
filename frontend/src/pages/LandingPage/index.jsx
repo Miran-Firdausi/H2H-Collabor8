@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Menu, Home, Users, Zap, Shield, Clock } from "lucide-react";
 import Footer from "../../components/Footer";
 import "./LandingPage.css";
+import { useNavigate, Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const LandingPage = () => {
-  const [isSignedIn] = useState(false);
+const LandingPage = ({ isAuthenticated }) => {
+  const navigate = useNavigate();
+
+  const handleSignupClick = () => {
+    navigate("/signup");
+  };
 
   const stats = [
     { number: "10K+", label: "Active Users" },
@@ -44,31 +50,30 @@ const LandingPage = () => {
             project management effortless.
           </p>
 
-          {!isSignedIn && (
+          {!isAuthenticated && (
             <div className="signup-container">
-              <input
-                type="email"
-                placeholder="Work email"
-                className="email-input"
-              />
               <p className="terms-text">
-                By clicking 'sign up' you agree to the Colabor8 Customer
-                Agreement, which incorporates by reference the AI
+                By clicking 'get started free' you agree to the Colabor8
+                Customer Agreement, which incorporates by reference the AI
                 Product-Specific Terms, and acknowledge the Privacy Policy.
               </p>
-              <button className="signup-button">Get Started Free</button>
-
-              <div className="divider">
+              <button className="signup-button" onClick={handleSignupClick}>
+                Get Started Free
+              </button>
+              {/* <div className="divider">
                 <span>Or continue with</span>
               </div>
 
               <div className="social-buttons">
-                {["Google", "Microsoft", "Apple", "Slack"].map((provider) => (
+                {["Google", "Facebook"].map((provider) => (
                   <button key={provider} className="social-button">
                     {provider}
                   </button>
                 ))}
-              </div>
+              </div> */}
+              <p className="already-user-text">
+                Already a user? <Link to="/login">Login</Link>
+              </p>
             </div>
           )}
         </div>
@@ -150,4 +155,8 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(LandingPage);
