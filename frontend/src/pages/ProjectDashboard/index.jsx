@@ -263,7 +263,7 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/AdminDashboard?project=${
+                          (window.location.href = `/project/dashboard?id=${
                             project.id
                           }&name=${encodeURIComponent(project.name)}`)
                         }

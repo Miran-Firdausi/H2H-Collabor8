@@ -14,6 +14,7 @@ import Chat from "../pages/Chat";
 import Share from "../pages/Share";
 import TextEditor from "../pages/TextEditor";
 import Project from "../pages/Project";
+import NotificationsPage from "../components/Notificatios";
 
 const AppRoutes = () => {
   return (
@@ -45,6 +46,7 @@ const AppRoutes = () => {
           element={<PrivateRoute element={Project} />}
         />
         <Route path="/project" element={<PrivateRoute element={Project} />} />
+        <Route path="/notifications" element={<PrivateRoute element={NotificationsPage} />} />
         <Route path="/document/:id" element={<TextEditor />} />
       </Routes>
     </Router>
