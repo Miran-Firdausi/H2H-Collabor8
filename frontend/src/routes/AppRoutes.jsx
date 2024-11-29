@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkAuthenticated, load_user } from "../actions/auth";
 import AgoraRTC, { AgoraRTCProvider, useRTCClient } from "agora-rtc-react";
 import { VideoRoom } from "../pages/VideoRoom";
 import LandingPage from "../pages/LandingPage";
@@ -25,6 +28,28 @@ const AppRoutes = () => {
   const agoraClient = useRTCClient(
     AgoraRTC.createClient({ codec: "vp8", mode: "rtc" })
   );
+
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const authenticateUser = async () => {
+      try {
+        await dispatch(checkAuthenticated());
+        await dispatch(load_user());
+      } catch (error) {
+        console.error("Authentication failed", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    authenticateUser();
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div className="loading-container">Loading Please wait...</div>;
+  }
 
   return (
     <>
