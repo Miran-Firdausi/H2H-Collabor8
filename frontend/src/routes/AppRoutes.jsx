@@ -1,4 +1,6 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import AgoraRTC, { AgoraRTCProvider, useRTCClient } from "agora-rtc-react";
+import { VideoRoom } from "../pages/VideoRoom";
 import LandingPage from "../pages/LandingPage";
 import Calendar from "../pages/Calendar";
 import Login from "../pages/Login";
@@ -16,9 +18,16 @@ import TextEditor from "../pages/TextEditor";
 import Project from "../pages/Project";
 
 const AppRoutes = () => {
+  const location = useLocation();
+  const showNavbar = !location.pathname.startsWith("/call/");
+
+  const agoraClient = useRTCClient(
+    AgoraRTC.createClient({ codec: "vp8", mode: "rtc" })
+  );
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {showNavbar && <Navbar />}
       <Routes>
         <Route index path="/" element={<LandingPage />} />
         <Route
@@ -46,8 +55,16 @@ const AppRoutes = () => {
         />
         <Route path="/project" element={<PrivateRoute element={Project} />} />
         <Route path="/document/:id" element={<TextEditor />} />
+        <Route
+          path="/call/:channelName"
+          element={
+            <AgoraRTCProvider client={agoraClient}>
+              <VideoRoom />
+            </AgoraRTCProvider>
+          }
+        />
       </Routes>
-    </Router>
+    </>
   );
 };
 
