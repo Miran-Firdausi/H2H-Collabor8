@@ -1,0 +1,78 @@
+/* Question Detail Page Styles */
+.pforum-question-detail-page {
+  max-width: 800px;
+  margin: 1em auto;
+}
+
+.pforum-question-detail-container {
+  background-color: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.pforum-question-detail-header {
+  margin-bottom: 20px;
+}
+
+.pforum-question-detail-title {
+  margin-bottom: 10px;
+  color: #24292e;
+}
+
+.pforum-question-detail-meta {
+  color: #6a737c;
+  font-size: 0.9em;
+}
+
+.pforum-answers-section {
+  margin-top: 20px;
+  border-top: 1px solid #e1e4e8;
+  padding-top: 20px;
+}
+
+.pforum-answer-item {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pforum-answer-form {
+  margin-top: 20px;
+}
+
+.pforum-answer-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 10px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.pforum-submit-answer-btn {
+  background-color: #2ea44f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.pforum-submit-answer-btn:hover {
+  background-color: #2c974b;
+}
+
+.pforum-back-link {
+  color: #0366d6;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pforum-back-link:hover {
+  text-decoration: underline;
+}

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { MessageCircleMore, Layout, Bell, User, Users } from "lucide-react";
 import "./Navbar.css";
 
 function Navbar() {
-  const [isSignedIn] = useState(true);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <nav className="nav-bar">
       <div className="nav-content">
@@ -13,7 +14,7 @@ function Navbar() {
           <span>Colabor8</span>
         </Link>
 
-        {isSignedIn ? (
+        {isAuthenticated ? (
           <div className="nav-links">
             <Link to="/projects" className="nav-link">
               <Layout size={20} />
@@ -27,9 +28,9 @@ function Navbar() {
               <Bell size={20} />
               <span>Notifications</span>
             </Link>
-            <Link to="/share" className="nav-link">
-                <Users size={20} />
-                <span>Discussions</span>
+            <Link to="/discussion" className="nav-link">
+              <Users size={20} />
+              <span>Discussions</span>
             </Link>
             <Link to="/profile" className="nav-link">
               <User size={20} />

@@ -1,0 +1,83 @@
+/* Page Header */
+.pforum-page-header {
+  padding: 15px 0;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.pforum-page-header h1 {
+  margin: 0;
+  font-weight: 400;
+  color: #333;
+  text-align: center;
+}
+
+.pforum-question-list-page {
+  max-width: 800px;
+  margin: auto;
+}
+
+.discussion-search-bar {
+  margin-top: 1em;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #666;
+}
+
+/* Question List Page Styles */
+.pforum-question-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pforum-question-list-item {
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 15px;
+  background-color: white;
+  transition: box-shadow 0.3s ease;
+}
+
+.pforum-question-list-item:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pforum-question-list-title {
+  font-size: 1.2em;
+  color: #0366d6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.pforum-question-list-title:hover {
+  text-decoration: underline;
+}
+
+.pforum-question-list-description {
+  color: #666;
+  margin: 10px 0;
+}
+
+.pforum-question-list-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.pforum-question-meta-details {
+  display: flex;
+  gap: 15px;
+  color: #6a737c;
+}
+
+.pforum-tag {
+  background-color: #eaf5ff;
+  color: #0366d6;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-right: 5px;
+  font-size: 0.8em;
+}
