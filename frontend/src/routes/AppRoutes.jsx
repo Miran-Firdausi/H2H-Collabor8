@@ -20,6 +20,7 @@ import Discussion from "../pages/Discussion";
 import QuestionPage from "../pages/QuestionPage";
 import TextEditor from "../pages/TextEditor";
 import Project from "../pages/Project";
+import NotificationsPage from "../components/Notificatios";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -84,6 +85,7 @@ const AppRoutes = () => {
           element={<PrivateRoute element={Project} />}
         />
         <Route path="/project" element={<PrivateRoute element={Project} />} />
+        <Route path="/notifications" element={<PrivateRoute element={NotificationsPage} />} />
         <Route path="/document/:id" element={<TextEditor />} />
         <Route
           path="/call/:channelName"

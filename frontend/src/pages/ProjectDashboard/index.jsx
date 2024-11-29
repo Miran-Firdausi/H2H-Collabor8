@@ -208,9 +208,9 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/project/tasks?name=${encodeURIComponent(
-                            project.name
-                          )}`)
+                          (window.location.href = `/project/tasks?id=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
                         }
                       >
                         <CheckSquare size={16} />
@@ -219,9 +219,9 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/project/board?name=${encodeURIComponent(
-                            project.name
-                          )}`)
+                          (window.location.href = `/project/board?id=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
                         }
                       >
                         <Layout size={16} />
@@ -230,9 +230,9 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/project/github?name=${encodeURIComponent(
-                            project.name
-                          )}`)
+                          (window.location.href = `/project/github?id=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
                         }
                       >
                         <Github size={16} />
@@ -241,9 +241,9 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/project/calendar?name=${encodeURIComponent(
-                            project.name
-                          )}`)
+                          (window.location.href = `/project/calendar?id=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
                         }
                       >
                         <Calendar size={16} />
@@ -252,9 +252,9 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/project/files?name=${encodeURIComponent(
-                            project.name
-                          )}`)
+                          (window.location.href = `/project/files?id=${
+                            project.id
+                          }&name=${encodeURIComponent(project.name)}`)
                         }
                       >
                         <File size={16} />
@@ -263,7 +263,7 @@ const ProjectsDashboard = () => {
                       <button
                         className="btn btn-outline"
                         onClick={() =>
-                          (window.location.href = `/AdminDashboard?project=${
+                          (window.location.href = `/project/dashboard?id=${
                             project.id
                           }&name=${encodeURIComponent(project.name)}`)
                         }

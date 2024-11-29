@@ -26,11 +26,11 @@ function Project() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(tab || "tasks");
-
   
   const queryParams = new URLSearchParams(location.search);
   const projectName = queryParams.get("name");
-  
+  const projectId = queryParams.get("id");
+
   const tabs = [
     { name: "tasks", icon: <CheckSquare />, label: "Tasks" },
     { name: "board", icon: <Layout />, label: "Board" },
@@ -41,25 +41,22 @@ function Project() {
   ];
 
   useEffect(() => {
-    
     if (tab && tabs.find((t) => t.name === tab.toLowerCase())) {
       setActiveTab(tab.toLowerCase());
     } else if (!tab) {
-     
-      navigate(`/project/tasks?name=${encodeURIComponent(projectName)}`);
+      navigate(`/project/tasks?id=${projectId}&name=${encodeURIComponent(projectName)}`);
     }
-  }, [tab, navigate, projectName, tabs]);
+  }, [tab, navigate, projectName, projectId, tabs]);
 
   const handleTabChange = (tabName) => {
     const newTab = tabName.toLowerCase();
     setActiveTab(newTab);
-    
-    navigate(`/project/${newTab}?name=${encodeURIComponent(projectName)}`);
+    navigate(`/project/${newTab}?id=${projectId}&name=${encodeURIComponent(projectName)}`);
   };
 
   const renderContent = () => {
-    // Pass project name to all components
-    const componentProps = { projectName };
+    
+    const componentProps = { projectName, projectId };
     
     switch (activeTab) {
       case "tasks":
@@ -79,20 +76,19 @@ function Project() {
     }
   };
 
-  // Redirect to login if project name is missing
+
   useEffect(() => {
-    if (!projectName) {
+    if (!projectName || !projectId) {
       navigate('/login');
     }
-  }, [projectName, navigate]);
+  }, [projectName, projectId, navigate]);
 
-  if (!projectName) {
-    return null; // Prevent rendering while redirecting
+  if (!projectName || !projectId) {
+    return null; 
   }
 
   return (
     <div className="project-container">
-      
       {/* Sidebar */}
       <div className={`sidebar ${isSidebarExpanded ? "expanded" : "collapsed"}`}>
         <button

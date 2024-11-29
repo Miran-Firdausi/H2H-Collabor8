@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project, Discussion
+from .models import Project, Discussion, Notification, GithubRepo
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner_email = serializers.EmailField(source='owner.email', read_only=True)
@@ -23,3 +23,15 @@ class DiscussionSerializer(serializers.ModelSerializer):
         model = Discussion
         fields = ["id", "title", "description", "additional_info", "created_at"]
 
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = ['id', 'notification_type', 'title', 'message', 
+                 'related_object_id', 'related_object_type', 
+                 'is_read', 'created_at']
+
+class GithubRepoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GithubRepo
+        fields = ['id', 'project', 'username', 'repository_name']

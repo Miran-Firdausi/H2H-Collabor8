@@ -1,0 +1,146 @@
+.notif-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .notif-content-wrapper {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+  
+  .notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .notif-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .notif-mark-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2563eb;
+    cursor: pointer;
+  }
+  
+  .notif-mark-all-btn:hover {
+    color: #1e40af;
+  }
+  
+  .notif-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .notif-error {
+    padding: 1rem;
+    text-align: center;
+    color: #ef4444;
+    background-color: #fef2f2;
+    border-radius: 0.5rem;
+  }
+  
+  .notif-empty {
+    padding: 2rem;
+    text-align: center;
+    color: #6b7280;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+  }
+  
+  .notif-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .notif-item {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+  }
+  
+  .notif-item-unread {
+    background-color: #eff6ff;
+    border-color: #dbeafe;
+  }
+  
+  .notif-item-read {
+    background-color: white;
+    border-color: #e5e7eb;
+  }
+  
+  .notif-item-content {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  
+  .notif-icon {
+    font-size: 1.5rem;
+  }
+  
+  .notif-details {
+    flex: 1;
+  }
+  
+  .notif-item-title {
+    font-weight: 500;
+  }
+  
+  .notif-item-message {
+    color: #4b5563;
+    margin-top: 0.25rem;
+  }
+  
+  .notif-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+  }
+  
+  .notif-timestamp {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .notif-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .notif-read-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #2563eb;
+    cursor: pointer;
+  }
+  
+  .notif-read-btn:hover {
+    color: #1e40af;
+  }
+  
+  .notif-delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #dc2626;
+    cursor: pointer;
+  }
+  
+  .notif-delete-btn:hover {
+    color: #b91c1c;
+  }
+  
+
+ 
