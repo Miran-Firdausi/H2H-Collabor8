@@ -1,3 +1,4 @@
+import { BrowserRouter as Router } from "react-router-dom";
 import { KanbanProvider } from "./contexts/KanbanContext";
 import AppRoutes from "./routes/AppRoutes";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +10,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <KanbanProvider>
-        <AppRoutes />
+        <Router>
+          <AppRoutes />
+        </Router>
       </KanbanProvider>
     </Provider>
   );
