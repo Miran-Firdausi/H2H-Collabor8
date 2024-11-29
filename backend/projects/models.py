@@ -16,16 +16,19 @@ class Project(models.Model):
         ],
     )
 
-    owner = models.ForeignKey('accounts.UserAccount', on_delete=models.CASCADE)
+    owner = models.ForeignKey("accounts.UserAccount", on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.name)
 
     class Meta:
-        ordering = ['-created_at']
-        
+        ordering = ["-created_at"]
+
+
 class GithubRepo(models.Model):
-    project = models.ForeignKey('Project',on_delete=models.CASCADE,related_name='github_repos')
+    project = models.ForeignKey(
+        "Project", on_delete=models.CASCADE, related_name="github_repos"
+    )
     username = models.CharField(max_length=255)
     githubRepo = models.CharField(max_length=255)
 
@@ -42,16 +45,17 @@ class Discussion(models.Model):
     def __str__(self):
         return self.title
 
+
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
-        ('project_created', 'Project Created'),
-        ('project_updated', 'Project Updated'),
-        ('project_deleted', 'Project Deleted'),
-        ('project_shared', 'Project Shared'),
-        ('discussion_created', 'Discussion Created'),
+        ("project_created", "Project Created"),
+        ("project_updated", "Project Updated"),
+        ("project_deleted", "Project Deleted"),
+        ("project_shared", "Project Shared"),
+        ("discussion_created", "Discussion Created"),
     ]
 
-    recipient = models.ForeignKey('accounts.UserAccount', on_delete=models.CASCADE)
+    recipient = models.ForeignKey("accounts.UserAccount", on_delete=models.CASCADE)
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
     title = models.CharField(max_length=255)
     message = models.TextField()
@@ -61,11 +65,11 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.notification_type} - {self.title}"
-        
+
 
 # class Task(models.Model):
 #     project = models.ForeignKey(Project, related_name="tasks", on_delete=models.CASCADE)

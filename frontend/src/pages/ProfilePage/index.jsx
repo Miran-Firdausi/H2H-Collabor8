@@ -56,7 +56,7 @@ const ProfilePage = ({ isAuthenticated, logout, user }) => {
         <div className="profile-banner">
           <div className="profile-avatar-container">
             <img
-              src="https://via.placeholder.com/150"
+              src="/Miran-Head.jpg"
               alt="User Avatar"
               className="profile-avatar"
             />

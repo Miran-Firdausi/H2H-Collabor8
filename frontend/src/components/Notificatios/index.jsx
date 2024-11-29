@@ -3,7 +3,7 @@ import { Check, CheckCheck, Loader, Trash2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { getConfig } from "../../utils/httpConfig";
-import './Notifications.css'
+import "./Notifications.css";
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     fetchNotifications();
-    
+
     const pollInterval = setInterval(fetchNotifications, 10000);
     return () => clearInterval(pollInterval);
   }, []);
@@ -135,7 +135,9 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 className={`notif-item ${
-                  !notification.is_read ? "notif-item-unread" : "notif-item-read"
+                  !notification.is_read
+                    ? "notif-item-unread"
+                    : "notif-item-read"
                 }`}
               >
                 <div className="notif-item-content">
@@ -153,7 +155,7 @@ export default function NotificationsPage() {
                         {!notification.is_read && (
                           <button
                             onClick={() => markAsRead(notification.id)}
-                            className="notif-read-btn"
+                            className="btn-secondary"
                           >
                             <Check size={14} />
                             Mark as read
@@ -161,7 +163,7 @@ export default function NotificationsPage() {
                         )}
                         <button
                           onClick={() => deleteNotification(notification.id)}
-                          className="notif-delete-btn"
+                          className="btn-danger"
                         >
                           <Trash2 size={14} />
                           Delete

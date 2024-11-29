@@ -160,9 +160,9 @@ DJOSER = {
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "SEND_CONFIRMATION_EMAIL": True,
     "SET_PASSWORD_RETYPE": True,
-    "PASSWORD_RESET_CONFIRM_URL": "/password/reset/confirm/{{uid}}/{{token}}",
-    "USERNAME_RESET_CONFIRM_URL": "/email/reset/confirm/{{uid}}/{{token}}",
-    "ACTIVATION_URL": f"{SITE_URL}/activate/{{uid}}/{{token}}",
+    "PASSWORD_RESET_CONFIRM_URL": f"/password/reset/confirm/{{uid}}/{{token}}",
+    "USERNAME_RESET_CONFIRM_URL": f"/email/reset/confirm/{{uid}}/{{token}}",
+    "ACTIVATION_URL": f"activate/{{uid}}/{{token}}",
     "SEND_ACTIVATION_EMAIL": True,
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
