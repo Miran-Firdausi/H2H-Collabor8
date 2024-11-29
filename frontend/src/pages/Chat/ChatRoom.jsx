@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
+import { Video } from "lucide-react";
 import { getConfig } from "../../utils/httpConfig";
 import "./ChatRoom.css";
 
@@ -9,6 +11,7 @@ const ChatRoom = ({ user, chatId, isAiChat }) => {
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
   const [socket, setSocket] = useState();
+  const navigate = useNavigate();
 
   const fetchMessages = async () => {
     try {
@@ -87,8 +90,19 @@ const ChatRoom = ({ user, chatId, isAiChat }) => {
     }
   };
 
+  const connectCall = () => {
+    navigate(`/call/${chatId}`);
+  };
+
   return (
     <div className="chat-room">
+      {!isAiChat && (
+        <div className="chat-room__header">
+          <button className="btn-primary" onClick={connectCall}>
+            <Video />
+          </button>
+        </div>
+      )}
       <div className="chat-room__message-list">
         {messages.map((message, index) => (
           <div

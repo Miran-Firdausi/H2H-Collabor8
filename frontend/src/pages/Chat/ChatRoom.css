@@ -8,6 +8,13 @@
   overflow: hidden;
 }
 
+.chat-room__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5em 40px;
+  background-color: #fff;
+}
+
 .chat-room__message-list {
   flex-grow: 1;
   padding: 20px;

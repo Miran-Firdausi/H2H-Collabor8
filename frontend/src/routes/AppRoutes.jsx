@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkAuthenticated, load_user } from "../actions/auth";
+import AgoraRTC, { AgoraRTCProvider, useRTCClient } from "agora-rtc-react";
+import { VideoRoom } from "../pages/VideoRoom";
 import LandingPage from "../pages/LandingPage";
 import Calendar from "../pages/Calendar";
 import Login from "../pages/Login";
@@ -11,15 +16,45 @@ import ProfilePage from "../pages/ProfilePage";
 import Navbar from "../components/Navbar";
 import ProjectsDashboard from "../pages/ProjectDashboard";
 import Chat from "../pages/Chat";
-import Share from "../pages/Share";
+import Discussion from "../pages/Discussion";
+import QuestionPage from "../pages/QuestionPage";
 import TextEditor from "../pages/TextEditor";
 import Project from "../pages/Project";
 import NotificationsPage from "../components/Notificatios";
 
 const AppRoutes = () => {
+  const location = useLocation();
+  const showNavbar = !location.pathname.startsWith("/call/");
+
+  const agoraClient = useRTCClient(
+    AgoraRTC.createClient({ codec: "vp8", mode: "rtc" })
+  );
+
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const authenticateUser = async () => {
+      try {
+        await dispatch(checkAuthenticated());
+        await dispatch(load_user());
+      } catch (error) {
+        console.error("Authentication failed", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    authenticateUser();
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div className="loading-container">Loading Please wait...</div>;
+  }
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {showNavbar && <Navbar />}
       <Routes>
         <Route index path="/" element={<LandingPage />} />
         <Route
@@ -36,7 +71,11 @@ const AppRoutes = () => {
         />
         <Route path="/calendar" element={<PrivateRoute element={Calendar} />} />
         <Route path="/chat" element={<PrivateRoute element={Chat} />} />
-        <Route path="/share" element={<PrivateRoute element={Share} />} />
+        <Route
+          path="/discussion"
+          element={<PrivateRoute element={Discussion} />}
+        />
+        <Route path="/question/:id" element={<QuestionPage />} />
         <Route
           path="/projects"
           element={<PrivateRoute element={ProjectsDashboard} />}
@@ -48,8 +87,16 @@ const AppRoutes = () => {
         <Route path="/project" element={<PrivateRoute element={Project} />} />
         <Route path="/notifications" element={<PrivateRoute element={NotificationsPage} />} />
         <Route path="/document/:id" element={<TextEditor />} />
+        <Route
+          path="/call/:channelName"
+          element={
+            <AgoraRTCProvider client={agoraClient}>
+              <VideoRoom />
+            </AgoraRTCProvider>
+          }
+        />
       </Routes>
-    </Router>
+    </>
   );
 };
 
