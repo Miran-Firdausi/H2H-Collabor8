@@ -247,10 +247,18 @@ export const signup =
       re_password,
     });
 
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/users/`,
-        body
+        body,
+        config
       );
 
       dispatch({
