@@ -13,7 +13,8 @@ import ProfilePage from "../pages/ProfilePage";
 import Navbar from "../components/Navbar";
 import ProjectsDashboard from "../pages/ProjectDashboard";
 import Chat from "../pages/Chat";
-import Share from "../pages/Share";
+import Discussion from "../pages/Discussion";
+import QuestionPage from "../pages/QuestionPage";
 import TextEditor from "../pages/TextEditor";
 import Project from "../pages/Project";
 
@@ -44,7 +45,11 @@ const AppRoutes = () => {
         />
         <Route path="/calendar" element={<PrivateRoute element={Calendar} />} />
         <Route path="/chat" element={<PrivateRoute element={Chat} />} />
-        <Route path="/share" element={<PrivateRoute element={Share} />} />
+        <Route
+          path="/discussion"
+          element={<PrivateRoute element={Discussion} />}
+        />
+        <Route path="/question/:id" element={<QuestionPage />} />
         <Route
           path="/projects"
           element={<PrivateRoute element={ProjectsDashboard} />}
