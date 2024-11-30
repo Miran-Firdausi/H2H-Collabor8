@@ -1,16 +1,16 @@
 
 # Collabor8
-A powerful and user-friendly platform to streamline team collaboration with task management, resource sharing, version control, and real-time updates.  
+An intuitive and efficient platform designed to enhance team collaboration through streamlined task management, resource sharing, version control, and real-time updates.
 
-## ⚙️ Getting Started  
+## Getting Started  
 
-### 1️⃣ Clone the Repository  
+### Clone the Repository  
 ```bash  
 git clone https://github.com/Miran-Firdausi/H2H-Collabor8.git
 ```  
 
-### 2️⃣ Install Dependencies  
-Run the following command in the project directory:  
+### Install Dependencies  
+Navigate to frontend:  
 ```bash
 cd frontend 
 npm install  
@@ -22,8 +22,8 @@ python -m venv venv
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`  
 pip install -r requirements.txt  
 ```
-### 3️⃣ Start the Development Server  
-Run the app locally:  
+### Start the Development Server  
+Start frontend:  
 ```bash
 cd frontend  
 npm run dev  
@@ -35,12 +35,9 @@ python manage.py makemigrations
 python manage.py migrate  
 python manage.py runserver  
 ```
-The app will be accessible at [http://localhost:5173/](http://localhost:5173/).  
-
 ---
-## 🌐 URL Paths
 
-### User Interface  
+### Pages  
 - **Home**: [http://localhost:5173/](http://localhost:5173/)
 - **Login**: [http://localhost:5173/login](http://localhost:5173/login)
 - **Signup**: [http://localhost:5173/signup](http://localhost:5173/signup)
@@ -52,25 +49,25 @@ The app will be accessible at [http://localhost:5173/](http://localhost:5173/).
 - **Profile**: [http://localhost:5173/profile](http://localhost:5173/profile)
 ---
 
-## 🚀 Features  
+## Features  
  
-- **Projects**: Manage and access all projects.
-- **Todo**: Generate tasks, search and sort tasks, update task status between todo, in progress and completed. 
-- **Sticky Board**: Create, edit and delete sticky notes. 
-- **Github Repository Dashboard**: Fetch and create repositories, open pull requests etc. 
-- **Calendar**: View assigned tasks and deadlines.  
-- **Profile**: View badges, update details, change password and logout.  
+- **Projects**: Effortlessly manage and access all your projects in one place.
+- **Todo**: Create tasks, search and sort them, and seamlessly update task statuses between "To-Do," "In Progress," and "Completed."
+- **Sticky Board**: Organize ideas visually with the ability to create, edit, and delete sticky 
+- **Github Repository Dashboard**: Interact with repositories directly, fetch and create repositories, and manage pull requests with ease.
+- **Calendar**: Stay on top of deadlines by viewing assigned tasks and important dates in a unified calendar view.
+- **Profile**: Track achievements with badges, update personal details, change your password, and log out securely.
 
 ---
 
-## 🛠️ Tech Stack  
+## Tech Stack  
 - **Frontend**: React JS.  
 - **Backend**: Django.  
 - **APIs**: GitHub, Gemini.  
 
 ---
 
-## 📂 Project Structure  
+## Project Structure  
 ```plaintext  
 H2H-Collabor8/
 ├── backend/                 # Backend directory
@@ -88,7 +85,6 @@ H2H-Collabor8/
 │   └── requirements.txt     # Backend dependencies
 
 ├── frontend/                # Frontend directory
-│   ├── dist/                # Deployment build files
 │   ├── node_modules/        # Frontend dependencies
 │   ├── public/              # Public assets
 │   ├── src/                 # Frontend source code
@@ -112,42 +108,8 @@ H2H-Collabor8/
 
 ```  
 
----
-
-## 🌟 Features Breakdown  
-
-### 📊 Dashboard  
-- Displays an overview of productivity, tasks, and recent repositories.  
-
-### 📂 Version Control and Collaboration  
-- GitHub integration provides a user-friendly interface for version control, suitable for all user levels.
-- 
-### 📅 Task & Deadline Management  
-- Supports Scrum, Kanban, and Gantt methodologies with customizable templates for flexible task visualization.
-- Task dependencies ensure proper sequencing, with intelligent task suggestions to enhance productivity.
-  
-### 🗓️ Calendar Integration  
-- Google Calendar sync for tracking project deadlines and tasks.
-
-### 💬 Creative Collaboration
-- Seamless integration with tools like Figma and Google Sheets for centralized resource management.
----
-
-
-## 🤝 Contributing  
-Contributions are welcome! To contribute:  
-1. Fork the repository.  
-2. Create a feature branch (`git checkout -b feature-name`).  
-3. Commit your changes (`git commit -m "Add new feature"`).  
-4. Push to the branch (`git push origin feature-name`).  
-5. Open a Pull Request.
-   
----
-
-## 💬 Connect  
-Have questions or suggestions? Feel free to reach out!  
+## Connect  
+Reach out to us for any questions or suggestions!  
 - **GitHub**: [Miran-Firdausi](https://github.com/Miran-Firdausi)  
 
 ---
-
-**Built with ❤️ by Collabor8 Developers.**
