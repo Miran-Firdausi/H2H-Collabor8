@@ -125,6 +125,6 @@ H2H-Collabor8/
 Have questions or suggestions? We'd love to hear from you!  
 
 - **GitHub**: [Miran-Firdausi](https://github.com/Miran-Firdausi)  
-- **Email**: miran.firdausi@gmail.com  
+- **Email**: miranfirdausi027@gmail.com  
 
 ---  
