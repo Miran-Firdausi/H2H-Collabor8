@@ -1,73 +1,85 @@
+# Collabor8  
 
-# Collabor8
-An intuitive and efficient platform designed to enhance team collaboration through streamlined task management, resource sharing, version control, and real-time updates.
+An intuitive and efficient platform designed to enhance team collaboration by streamlining task management, resource sharing, version control, and real-time updates.  
 
-## Getting Started  
+---
 
-### Clone the Repository  
+## 🚀 **Getting Started**  
+
+### 📂 Clone the Repository  
 ```bash  
-git clone https://github.com/Miran-Firdausi/H2H-Collabor8.git
+git clone https://github.com/Miran-Firdausi/H2H-Collabor8.git  
 ```  
 
-### Install Dependencies  
-Navigate to frontend:  
+### 📦 Install Dependencies  
+#### Frontend:  
 ```bash
 cd frontend 
 npm install  
-```
-Navigate to backend directory: 
+```  
+
+#### Backend:  
 ```bash
 cd backend  
 python -m venv venv  
 source venv/bin/activate  # On Windows, use `venv\Scripts\activate`  
 pip install -r requirements.txt  
-```
-### Start the Development Server  
-Start frontend:  
+```  
+
+### ▶️ Start the Development Server  
+#### Start Frontend:  
 ```bash
 cd frontend  
 npm run dev  
 ```  
-Start backend: 
+
+#### Start Backend:  
 ```bash
 cd backend  
 python manage.py makemigrations  
 python manage.py migrate  
-python manage.py runserver  
-```
----
-
-### Pages  
-- **Home**: [http://localhost:5173/](http://localhost:5173/)
-- **Login**: [http://localhost:5173/login](http://localhost:5173/login)
-- **Signup**: [http://localhost:5173/signup](http://localhost:5173/signup)
-- **Projects**: [http://localhost:5173/projects](http://localhost:5173/projects)  
-- **Todo**: [http://localhost:5173/todo](http://localhost:5173/todo)  
-- **Board**: [http://localhost:5173/board](http://localhost:5173/board)  
-- **Calendar**: [http://localhost:5173/calendar](http://localhost:5173/calendar)  
-- **Github**: [http://localhost:5173/gitboard](http://localhost:5173/gitboard)  
-- **Profile**: [http://localhost:5173/profile](http://localhost:5173/profile)
----
-
-## Features  
- 
-- **Projects**: Effortlessly manage and access all your projects in one place.
-- **Todo**: Create tasks, search and sort them, and seamlessly update task statuses between "To-Do," "In Progress," and "Completed."
-- **Sticky Board**: Organize ideas visually with the ability to create, edit, and delete sticky 
-- **Github Repository Dashboard**: Interact with repositories directly, fetch and create repositories, and manage pull requests with ease.
-- **Calendar**: Stay on top of deadlines by viewing assigned tasks and important dates in a unified calendar view.
-- **Profile**: Track achievements with badges, update personal details, change your password, and log out securely.
+uvicorn collabor8.asgi:application --reload  
+```  
 
 ---
 
-## Tech Stack  
-- **Frontend**: React JS.  
-- **Backend**: Django.  
-- **APIs**: GitHub, Gemini.  
+## 🌐 **Pages**  
+| **Page**      | **Description**                                   | **URL**                                  |  
+|----------------|---------------------------------------------------|------------------------------------------|  
+| **Home**       | Landing page showcasing Collabor8 features       | [http://localhost:5173/](http://localhost:5173/) |  
+| **Login**      | Secure user login                                | [http://localhost:5173/login](http://localhost:5173/login) |  
+| **Signup**     | Create a new account                             | [http://localhost:5173/signup](http://localhost:5173/signup) |  
+| **Projects**   | Manage and access all projects in one place      | [http://localhost:5173/projects](http://localhost:5173/projects) |  
+| **Todo**       | Organize and track tasks effectively             | [http://localhost:5173/todo](http://localhost:5173/todo) |  
+| **Board**      | Visualize and manage ideas using sticky notes    | [http://localhost:5173/board](http://localhost:5173/board) |  
+| **Calendar**   | Unified calendar view of deadlines and tasks     | [http://localhost:5173/calendar](http://localhost:5173/calendar) |  
+| **GitHub**     | Git repository management and interactions       | [http://localhost:5173/gitboard](http://localhost:5173/gitboard) |  
+| **Profile**    | Update details, track achievements, and log out  | [http://localhost:5173/profile](http://localhost:5173/profile) |  
 
 ---
 
-## Project Structure  
+## ✨ **Features**  
+
+- **Projects Management**: Effortlessly manage and access all projects in a centralized location.  
+- **Todo List**: Create, search, and sort tasks, and update their statuses between "To-Do," "In Progress," and "Completed."  
+- **Sticky Board**: Visualize and organize ideas with sticky notes. Create, edit, and delete notes with ease.  
+- **GitHub Repository Dashboard**: Fetch repositories, create repositories, and manage pull requests directly from the app.  
+- **Calendar View**: Stay organized by tracking deadlines and events in an intuitive calendar interface.  
+- **Profile Management**: Track your achievements, earn badges, and update personal details.  
+- **Real-Time Chats**: Enjoy individual, group, and video chat functionality with time-stamped messages.  
+- **File Sharing**: Upload and collaborate on project-related files, including real-time editing of documents like Figma files.  
+
+---
+
+## 🛠️ **Tech Stack**  
+
+- **Frontend**: React JS (Vite for blazing-fast builds).  
+- **Backend**: Django (ASGI support for real-time updates).  
+- **APIs**: GitHub API, Gemini API.  
+
+---
+
+## 📂 **Project Structure**  
 ```plaintext  
 H2H-Collabor8/
 ├── backend/                 # Backend directory
@@ -105,11 +117,14 @@ H2H-Collabor8/
 ├── README.md                # Project documentation
 ├── .env                     # General environment variables
 └── .gitignore               # Git ignore rules
-
 ```  
 
-## Connect  
-Reach out to us for any questions or suggestions!  
-- **GitHub**: [Miran-Firdausi](https://github.com/Miran-Firdausi)  
-
 ---
+
+## 🤝 **Connect**  
+Have questions or suggestions? We'd love to hear from you!  
+
+- **GitHub**: [Miran-Firdausi](https://github.com/Miran-Firdausi)  
+- **Email**: miran.firdausi@gmail.com  
+
+---  
