@@ -14,26 +14,26 @@ import {
   Link2,
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
-import "./AdminDashboard.css"
+import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   // Moved all data to centralized objects/arrays for easier backend integration later
-  
+
   const queryParams = new URLSearchParams(location.search);
   const projectName = queryParams.get("name");
 
   const [analyticsData] = useState({
-    totalTasks: { value: 25, change: "+2 from last week" },
-    completionRate: { value: 78, change: "+5% from last month" },
-    pendingTasks: { value: 8, change: "Need attention" },
-    unassignedTasks: { value: 3, change: "Requires assignment" },
+    totalTasks: { value: 0, change: "No change from last week" },
+    completionRate: { value: 0, change: "0% from last month" },
+    pendingTasks: { value: 0, change: "No activity" },
+    unassignedTasks: { value: 0, change: "No activity" },
   });
   const [projectDetails] = useState({
     name: projectName,
     description: "A powerful video editing tool",
-    startDate: "2024-03-01",
-    endDate: "2024-06-30",
-    progress: 65,
+    startDate: "Not set",
+    endDate: "Not set",
+    progress: 10,
   });
   const [taskStatusData] = useState([
     { name: "To Do", value: 8, color: "#e11d48" },
@@ -110,25 +110,18 @@ const AdminDashboard = () => {
 
   const [teamMembers, setTeamMembers] = useState([
     {
-      name: "Alex Kim",
-      role: "Project Manager",
+      name: "Miran Firdausi",
+      role: "Backend Developer",
       status: "online",
       tasks: 12,
       team: "Management",
     },
     {
-      name: "Sarah Chen",
-      role: "Developer",
+      name: "Saumay Jaiswal",
+      role: "Backend Developer",
       status: "busy",
       tasks: 8,
       team: "Development",
-    },
-    {
-      name: "Mike Ross",
-      role: "Designer",
-      status: "away",
-      tasks: 5,
-      team: "Design",
     },
   ]);
 
@@ -185,8 +178,6 @@ const AdminDashboard = () => {
         <h1>Admin Dashboard</h1>
         <p>Welcome back, Admin</p>
       </div>
-
-      
 
       <div className="overview-events-team-grid">
         <div className="card project-overview">

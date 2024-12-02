@@ -7,7 +7,8 @@ import { getConfig } from "../../utils/httpConfig";
 import "./Navbar.css";
 
 function Navbar() {
-  const [isSignedIn] = useState(true);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const [unreadCount, setUnreadCount] = useState(0);
 
   const fetchUnreadCount = async () => {
@@ -23,26 +24,21 @@ function Navbar() {
     }
   };
 
-  
   useEffect(() => {
-    if (isSignedIn) {
-     
+    if (isAuthenticated) {
       fetchUnreadCount();
 
-     
       const pollInterval = setInterval(fetchUnreadCount, 1000);
 
-      
-      window.addEventListener('notificationUpdate', fetchUnreadCount);
+      window.addEventListener("notificationUpdate", fetchUnreadCount);
 
       return () => {
         clearInterval(pollInterval);
-        window.removeEventListener('notificationUpdate', fetchUnreadCount);
+        window.removeEventListener("notificationUpdate", fetchUnreadCount);
       };
     }
-  }, [isSignedIn]);
+  }, [isAuthenticated]);
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <nav className="nav-bar">
       <div className="nav-content">
