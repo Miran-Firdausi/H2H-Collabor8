@@ -290,10 +290,18 @@ export const signup =
 export const verify = (uid, token) => async (dispatch) => {
   const body = JSON.stringify({ uid, token });
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  };
+
   try {
     await axios.post(
       `${import.meta.env.VITE_API_URL}/auth/users/activation/`,
-      body
+      body,
+      config
     );
     dispatch({
       type: ACTIVATION_SUCCESS,
